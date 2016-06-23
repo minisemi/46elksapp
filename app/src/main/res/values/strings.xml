@@ -2,9 +2,10 @@
     <string name="app_name">46elksapp</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
+
+    <string name="action_login">Login</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="text_sign_up">Not a member?</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -13,4 +14,28 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Strings related to sign up -->
+    <string name="text_create_account">Create your account</string>
+    <string name="prompt_name_or_company">Name or company</string>
+    <string name="prompt_mobile_number">Mobile number</string>
+    <string name="text_terms">By clicking on the button, I agree with the terms (LINK NEEDED).
+        An automatic phone call will be made to your number to verify the account.</string>
+    <string name="action_create_account">Create your account</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+
+    <!-- Strings related to sign up -->
+    <string name="text_create_group">Create a group of people you'd like to text.</string>
+    <string name="prompt_name_of_group">Group name</string>
+    <string name="prompt_sender">Sender</string>
+    <string name="action_import">Import</string>
+    <string name="action_manually">Manually add</string>
+    <string name="prompt_first_name">First name</string>
+    <string name="prompt_last_name">Last name</string>
+    <string name="prompt_number">Phone number</string>
+    <string name="action_add">Add contact</string>
+    <string name="text_add_to_address_book">Also add contact to phone's address book.</string>
+    <string name="action_create_group">Create group</string>
+
 </resources>
