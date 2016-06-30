@@ -40,7 +40,7 @@
     <string name="title_activity_create_message">CreateMessageActivity</string>
 
     <!-- Strings related to CreateMessageActivity -->
-    <string name="text_create_message">Write a message which you would like to send to the group and label it.</string>
+    <string name="text_create_message">Write a message you\'d like to send to the group and label it.</string>
     <string name="prompt_message_label">Message label</string>
     <string name="prompt_message_text">Message text</string>
     <string name="action_create_message">Create message (this doesn\'t send it)</string>
@@ -50,8 +50,16 @@
     <string name="text_group_name">Group name</string>
     <string name="text_message_name">Messsage name</string>
     <string name="action_send_message">Send message</string>
-    <string name="title_activity_tabbed">TabbedActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="text_message">This is an example of how the text message might look. Sasfas jnasn
+    jsadjasi pjsadjdsa jop ooasdj jas kd ksadkasdkadks kadsksak end of message.</string>
+
+    <!-- Strings related to ContactsActivity -->
+    <string name="text_contacts">Contacts</string>
+
+    <!-- Strings related to HistoryActivity -->
+    <string name="text_history">History</string>
+
+    <!-- Strings related to SettingsActivity -->
+    <string name="text_settings">Settings</string>
 
 </resources>

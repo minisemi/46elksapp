@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +8,33 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="a46elks.a46elksapp.createMessage.CreateMessageActivity"
-    android:background="@android:color/background_light">
+    android:background="@android:color/background_light"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:weightSum="1"
+        android:layout_marginBottom="15dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton7"
+            android:src="@android:drawable/ic_menu_revert"
+            android:layout_weight="0"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView5"
+            android:src="@drawable/header1"
+            android:layout_weight="7"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,7 +42,12 @@
         android:text="@string/text_create_message"
         android:id="@+id/text_create_message"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="10dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -24,15 +55,22 @@
         android:hint="@string/prompt_message_label"
         android:id="@+id/prompt_message_label"
         android:layout_below="@+id/text_create_message"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_message_text"
         android:id="@+id/prompt_message_text"
         android:layout_below="@+id/prompt_message_label"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0"
+        android:lines="3"
+        android:layout_gravity="center"
+        android:gravity="top|center" />
 
     <Button
         android:layout_width="wrap_content"
@@ -40,7 +78,9 @@
         android:text="@string/action_create_message"
         android:id="@+id/action_create_message"
         android:layout_below="@+id/prompt_message_text"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0"
+        android:layout_gravity="center" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -49,6 +89,8 @@
         android:text="@string/action_delete_message"
         android:id="@+id/action_delete_message"
         android:layout_below="@+id/action_create_message"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0"
+        android:layout_gravity="center" />
 
-</RelativeLayout>
+</LinearLayout>
