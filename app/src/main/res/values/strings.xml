@@ -25,7 +25,7 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
 
-    <!-- Strings related to GroupsActivity  -->
+    <!-- Strings related to GroupsActivity1  -->
     <string name="text_create_group">Create a group of people you\'d like to text.</string>
     <string name="prompt_name_of_group">Group name</string>
     <string name="prompt_sender">Sender</string>
@@ -38,6 +38,13 @@
     <string name="text_add_to_address_book">Also add contact to phone\'s address book.</string>
     <string name="action_create_group">Create group</string>
     <string name="title_activity_create_message">CreateMessageActivity</string>
+    <string name="text_create_group_intro1">Welcome to the 46elks app - the app that let\'s you send
+        SMS to people without having to worry about being texted back.
+        \n\n
+        The first step to get started is to create a group of recipients you\'d like to text. Name
+        the group along with who the receiver will see that the SMS is from below!</string>
+    <string name="text_create_group_intro2">Now either import contacts from your phone\'s address
+        book or add them manually to populate the group.</string>
 
     <!-- Strings related to CreateMessageActivity -->
     <string name="text_create_message">Write a message you\'d like to send to the group and label it.</string>

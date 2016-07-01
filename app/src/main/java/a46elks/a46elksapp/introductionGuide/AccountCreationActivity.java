@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import a46elks.a46elksapp.R;
-import a46elks.a46elksapp.introductionGuide.GroupsActivity;
 
 public class AccountCreationActivity extends AppCompatActivity {
 
@@ -25,7 +24,7 @@ public class AccountCreationActivity extends AppCompatActivity {
         createAccaountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, GroupsActivity.class);
+                Intent intent = new Intent(context, GroupsActivity1.class);
                 startActivity(intent);
 
 
