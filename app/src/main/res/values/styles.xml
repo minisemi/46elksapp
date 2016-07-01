@@ -3,8 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#ff00ddff</item>
-        <item name="colorPrimaryDark">@android:color/holo_blue_dark</item>
+        <item name="colorPrimary">@android:color/holo_blue_dark</item>
+        <item name="colorPrimaryDark">#303F9F</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -20,13 +20,12 @@
 
     <!-- Theme for sliding tabs -->
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@android:color/holo_blue_dark</item>
         <item name="tabTextAppearance">@style/MyCustomTextAppearance</item>
+
     </style>
 
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
-        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

@@ -1,0 +1,11 @@
+NOT SELECTED
+color: #e7e7e7 (light grey)
+padding: 5% padding
+no trim
+saved as icon in code
+
+SELECTED
+color: #fff (white)
+padding: no padding
+trimmed
+saved as charsequence (text) in code

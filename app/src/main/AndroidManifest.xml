@@ -22,14 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".account.AccountCreationActivity" />
-        <activity android:name=".groups.GroupsActivity" />
+        <activity android:name=".introductionGuide.AccountCreationActivity" />
+        <activity android:name=".introductionGuide.GroupsActivity" />
         <activity android:name=".sendMessage.SendMessageActivity" />
-        <activity android:name=".createMessage.CreateMessageActivity" />
+        <activity android:name=".introductionGuide.CreateMessageActivity" />
         <activity android:name=".contacts.ContactsActivity" />
         <activity android:name=".history.HistoryActivity" />
         <activity android:name=".settings.SettingsActivity" />
-        <activity android:name=".HamburgerActivity"/>
+        <activity android:name=".tabLayout.TabLayoutActivity"/>
     </application>
 
 </manifest>

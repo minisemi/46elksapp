@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -30,15 +29,14 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import a46elks.a46elksapp.account.AccountCreationActivity;
-import a46elks.a46elksapp.groups.GroupsActivity;
+import a46elks.a46elksapp.introductionGuide.AccountCreationActivity;
+import a46elks.a46elksapp.introductionGuide.GroupsActivity;
+import a46elks.a46elksapp.tabLayout.TabLayoutActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -83,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.prompt_password);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -103,10 +102,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, HamburgerActivity.class);
-                startActivity(intent);
                 //attemptLogin();
-
+                //checkFirstTimeUser();
+                Intent intent = new Intent(context, GroupsActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -121,6 +120,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+    }
+
+    // Checks if it's the first time the user logs in on the app. If so, enter introduction sequence.
+    // If not, log in as usual.
+    private boolean checkFirstTimeUser (){
+
+        return true;
     }
 
     private void populateAutoComplete() {

@@ -59,7 +59,7 @@
     <!-- Strings related to HistoryActivity -->
     <string name="text_history">History</string>
 
-    <!-- Strings related to SettingsActivity -->
+    <!-- Strings related to SettingsFragment -->
     <string name="text_settings">Settings</string>
 
 </resources>
