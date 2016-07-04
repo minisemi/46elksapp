@@ -56,6 +56,7 @@ public class TabLayoutActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
+                viewPager.setCurrentItem(tab.getPosition(), true);
                 tab.setIcon(null);
                 tab.setText(getPageTitle(tab.getPosition()));
                 fadeLastSelectedTab();
@@ -93,6 +94,8 @@ public class TabLayoutActivity extends AppCompatActivity {
         return sb;
     }
 
+    @Override
+    public void onBackPressed() {this.moveTaskToBack(true);}
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

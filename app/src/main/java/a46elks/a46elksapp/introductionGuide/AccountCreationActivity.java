@@ -18,10 +18,7 @@ public class AccountCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_creation);
 
-        Button createAccaountButton;
-
-        createAccaountButton =  (Button) (findViewById(R.id.action_create_account));
-        createAccaountButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.action_create_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, IntroTabLayoutActivity.class);

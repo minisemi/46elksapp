@@ -43,7 +43,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment{
             @Override
             public void onClick(View v) {
 
-                Snackbar.make(getView(),"Contact added", Snackbar.LENGTH_LONG);
+                Snackbar.make(v,"Contact added", Snackbar.LENGTH_SHORT).show();
                 //startwaitforresponsintent..
             }
         });
@@ -52,3 +52,5 @@ public class ContactsFragment extends android.support.v4.app.Fragment{
     }
 
 }
+
+

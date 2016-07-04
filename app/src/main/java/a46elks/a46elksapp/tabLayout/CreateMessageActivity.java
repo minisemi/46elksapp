@@ -22,5 +22,13 @@ public class CreateMessageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.action_create_message_go_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateMessageActivity.this, TabLayoutActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

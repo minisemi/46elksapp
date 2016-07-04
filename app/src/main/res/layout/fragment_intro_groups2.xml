@@ -15,18 +15,19 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_height="fill_parent"
+        android:layout_weight="5"
         android:weightSum="1"
-        android:layout_marginBottom="10dp" >
+        android:layout_marginBottom="15dp" >
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/action_intro_go_back1"
-            android:src="@android:drawable/ic_menu_revert"
+            android:src="@drawable/ic_go_back"
             android:layout_weight="0"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:background="@android:color/transparent" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -38,116 +39,123 @@
             android:layout_gravity="center" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/text_create_group_intro2"
-        android:id="@+id/textView4"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:gravity="center" />
-
-    <TabHost
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/tabHost3"
-        android:layout_below="@+id/prompt_sender"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentRight="false"
-        android:layout_weight="4" >
+        android:layout_weight="1">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/text_create_group_intro2"
+            android:id="@+id/textView4"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:gravity="center" />
+
+        <TabHost
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:layout_height="fill_parent"
+            android:id="@+id/tabHost3"
+            android:layout_below="@+id/prompt_sender"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="false"
+            android:layout_weight="4" >
 
-            <TabWidget
-                android:id="@android:id/tabs"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
 
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <LinearLayout
-                    android:id="@+id/linearLayout5"
+                <TabWidget
+                    android:id="@android:id/tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:layout_height="wrap_content" />
 
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/listView_import_contacts"
-                        android:layout_gravity="center_horizontal" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout6"
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
+                    android:layout_height="match_parent" >
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/action_add"
-                        android:id="@+id/button" />
-
-                    <CheckBox
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_add_to_address_book"
-                        android:id="@+id/checkBox" />
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:text="@string/prompt_first_name"
-                        android:ems="10"
-                        android:id="@+id/editText" />
-
-                    <EditText
+                    <LinearLayout
+                        android:id="@+id/linearLayout5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:text="@string/prompt_last_name"
-                        android:ems="10"
-                        android:id="@+id/editText2"
-                        android:layout_gravity="center_horizontal" />
+                        android:orientation="vertical" >
 
-                    <EditText
+                        <ListView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/listView_import_contacts"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout6"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:text="@string/prompt_number"
-                        android:ems="10"
-                        android:id="@+id/editText3"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" >
 
-                    <ListView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/listView9" />
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/action_add"
+                            android:id="@+id/button" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/action_populate_group"
-        android:id="@+id/action_populate_group"
-        android:layout_below="@+id/tabHost"
-        android:layout_centerHorizontal="true"
-        android:layout_weight="0"
-        android:layout_gravity="center_horizontal" />
+                        <CheckBox
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_add_to_address_book"
+                            android:id="@+id/checkBox" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="@string/prompt_first_name"
+                            android:ems="10"
+                            android:id="@+id/editText" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="@string/prompt_last_name"
+                            android:ems="10"
+                            android:id="@+id/editText2"
+                            android:layout_gravity="center_horizontal" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:text="@string/prompt_number"
+                            android:ems="10"
+                            android:id="@+id/editText3"
+                            android:layout_gravity="center_horizontal" />
+
+                        <ListView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/listView9" />
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_populate_group"
+            android:id="@+id/action_populate_group"
+            android:layout_below="@+id/tabHost"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 
 </LinearLayout>

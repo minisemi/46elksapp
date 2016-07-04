@@ -13,7 +13,7 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:weightSum="1"
@@ -23,16 +23,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageButton5"
-            android:src="@android:drawable/ic_menu_revert"
+            android:src="@drawable/ic_go_back"
             android:layout_weight="0"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:background="@android:color/transparent" />
 
         <ImageView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView2"
             android:src="@drawable/header1"
-            android:layout_weight="4"
+            android:layout_weight="6"
             android:background="@android:color/transparent" />
     </LinearLayout>
 

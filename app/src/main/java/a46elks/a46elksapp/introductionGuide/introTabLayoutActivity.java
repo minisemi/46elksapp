@@ -47,4 +47,20 @@ public class IntroTabLayoutActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         viewPager.setCurrentItem(savedInstanceState.getInt(POSITION));
     }
+
+    @Override
+    public void onBackPressed() {
+
+        switch (viewPager.getCurrentItem()) {
+
+            case 0: this.moveTaskToBack(true);
+                    break;
+
+            case 1: case 2: viewPager.setCurrentItem(viewPager.getCurrentItem()-1, true);
+                   break;
+
+            default: break;
+        }
+
+    }
 }

@@ -70,7 +70,7 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
             @Override
             public void onClick(View v) {
 
-                Snackbar.make(getView(),"Message Sent", Snackbar.LENGTH_LONG);
+                Snackbar.make(v,"Message Sent", Snackbar.LENGTH_SHORT).show();
 
             }
         });

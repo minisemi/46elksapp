@@ -52,7 +52,7 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
             @Override
             public void onClick(View v) {
 
-                Snackbar.make(getView(),"Group created", Snackbar.LENGTH_LONG);
+                Snackbar.make(v,"Group created", Snackbar.LENGTH_SHORT).show();
                 //startwaitforresponsintent..
             }
         });
