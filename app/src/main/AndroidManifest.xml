@@ -25,13 +25,15 @@
         <activity android:name=".introductionGuide.AccountCreationActivity" />
         <activity android:name=".introductionGuide.GroupsActivity1" />
         <activity android:name=".sendMessage.SendMessageActivity" />
-        <activity android:name=".introductionGuide.CreateMessageActivity" />
+        <activity android:name=".introductionGuide.CreateMessageFragment" />
         <activity android:name=".contacts.ContactsActivity" />
         <activity android:name=".history.HistoryActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".tabLayout.TabLayoutActivity" />
-        <activity android:name=".introductionGuide.GroupsActivity2" />
-        <activity android:name=".introductionGuide.introTabLayoutActivity"></activity>
+        <activity android:name=".introductionGuide.IntroGroupsFragment2" />
+        <activity android:name=".introductionGuide.IntroTabLayoutActivity" />
+        <activity android:name=".tabLayout.CreateMessageActivity" />
+        <activity android:name=".tabLayout.EditMessageActivity"></activity>
     </application>
 
 </manifest>

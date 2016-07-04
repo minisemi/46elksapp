@@ -3,12 +3,13 @@ package a46elks.a46elksapp.tabLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import a46elks.a46elksapp.R;
-import a46elks.a46elksapp.introductionGuide.CreateMessageActivity;
+import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
 
 /**
  * Created by Alexander on 2016-06-29.
@@ -49,11 +50,11 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getActivity(), CreateMessageActivity.class);
+                Intent intent = new Intent(getActivity(), EditMessageActivity.class);
                 startActivity(intent);
                 //startwaitforresponsintent..
             }
-        });;
+        });
 
         view.findViewById(R.id.action_add_message).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +64,15 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
                 startActivity(intent);
                 //startwaitforresponsintent..
             }
-        });;
+        });
+
+        view.findViewById(R.id.action_send_message).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Snackbar.make(getView(),"Message Sent", Snackbar.LENGTH_LONG);
+
+            }
+        });
     }
 }

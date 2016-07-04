@@ -1,4 +1,4 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.introductionGuide;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -9,15 +9,18 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
+import a46elks.a46elksapp.introductionGuide.IntroGroupsFragment1;
+import a46elks.a46elksapp.introductionGuide.IntroGroupsFragment2;
 
 /**
  * Created by Alexander on 2016-06-29.
  */
-public class SampleFragmentPagerAdapter extends FragmentPagerAdapter{
+public class IntroSampleFragmentPagerAdapter extends FragmentPagerAdapter{
 
-    final int PAGE_COUNT = 5;
+    final int PAGE_COUNT = 3;
 
-    public SampleFragmentPagerAdapter(android.support.v4.app.FragmentManager fm) {
+    public IntroSampleFragmentPagerAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
     }
 
@@ -33,19 +36,13 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter{
         switch (position +1){
 
             case 1:
-                return SendMessageFragment.newInstance(position + 1);
+                return IntroGroupsFragment1.newInstance(position + 1);
 
             case 2:
-                return GroupsFragment.newInstance(position + 1);
+                return IntroGroupsFragment2.newInstance(position + 1);
 
             case 3:
-                return ContactsFragment.newInstance(position + 1);
-
-            case 4:
-                return HistoryFragment.newInstance(position + 1);
-
-            case 5:
-                return SettingsFragment.newInstance(position + 1);
+                return CreateMessageFragment.newInstance(position + 1);
         }
         return null;
     }

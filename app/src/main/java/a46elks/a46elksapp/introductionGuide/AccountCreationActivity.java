@@ -24,7 +24,7 @@ public class AccountCreationActivity extends AppCompatActivity {
         createAccaountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, GroupsActivity1.class);
+                Intent intent = new Intent(context, IntroTabLayoutActivity.class);
                 startActivity(intent);
 
 

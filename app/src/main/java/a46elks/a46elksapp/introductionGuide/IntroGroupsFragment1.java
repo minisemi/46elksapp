@@ -1,27 +1,28 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.introductionGuide;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import a46elks.a46elksapp.R;
 
 /**
  * Created by Alexander on 2016-06-29.
  */
-public class ContactsFragment extends android.support.v4.app.Fragment{
+public class IntroGroupsFragment1 extends android.support.v4.app.Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
 
-    public static ContactsFragment newInstance(int page) {
+    public static IntroGroupsFragment1 newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        ContactsFragment fragment = new ContactsFragment();
+        IntroGroupsFragment1 fragment = new IntroGroupsFragment1();
         fragment.setArguments(args);
         return fragment;
     }
@@ -37,18 +38,25 @@ public class ContactsFragment extends android.support.v4.app.Fragment{
                              Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_contacts, container, false);
-
-        view.findViewById(R.id.action_add_contact).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Snackbar.make(getView(),"Contact added", Snackbar.LENGTH_LONG);
-                //startwaitforresponsintent..
-            }
-        });
+        View view = inflater.inflate(R.layout.fragment_intro_groups1, container, false);
 
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.findViewById(R.id.action_create_group).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntroTabLayoutActivity.viewPager.setCurrentItem(1, true);
+            }
+        });
+
+    }
 }
+
+
+
+

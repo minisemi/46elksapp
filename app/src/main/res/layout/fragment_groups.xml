@@ -7,35 +7,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".introductionGuide.GroupsActivity1"
+    tools:context=".tabLayout.GroupsFragment"
     android:orientation="vertical"
     android:background="@android:color/background_light">
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2.35"
-        android:weightSum="1"
-        android:layout_marginBottom="10dp">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton6"
-            android:src="@android:drawable/ic_menu_revert"
-            android:layout_weight="0"
-            android:layout_gravity="center" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView3"
-            android:src="@drawable/header1"
-            android:layout_weight="7"
-            android:background="@android:color/transparent"
-            android:layout_gravity="center" />
-    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"

@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import a46elks.a46elksapp.introductionGuide.AccountCreationActivity;
-import a46elks.a46elksapp.introductionGuide.GroupsActivity1;
+import a46elks.a46elksapp.introductionGuide.IntroTabLayoutActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onClick(View v) {
                 //attemptLogin();
                 //checkFirstTimeUser();
-                Intent intent = new Intent(context, GroupsActivity1.class);
+                Intent intent = new Intent(context, IntroTabLayoutActivity.class);
                 startActivity(intent);
 
             }

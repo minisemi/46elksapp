@@ -25,7 +25,7 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
 
-    <!-- Strings related to GroupsActivity1  -->
+    <!-- Strings related to IntroGroupsFragment1  -->
     <string name="text_create_group">Create a group of people you\'d like to text.</string>
     <string name="prompt_name_of_group">Group name</string>
     <string name="prompt_sender">Sender</string>
@@ -43,15 +43,20 @@
         \n\n
         The first step to get started is to create a group of recipients you\'d like to text. Name
         the group along with who the receiver will see that the SMS is from below!</string>
-    <string name="text_create_group_intro2">Now either import contacts from your phone\'s address
+    <string name="text_create_group_intro2">Now, either import contacts from your phone\'s address
         book or add them manually to populate the group.</string>
+    <string name="action_populate_group">Populate group</string>
 
-    <!-- Strings related to CreateMessageActivity -->
+    <!-- Strings related to CreateMessageFragment -->
     <string name="text_create_message">Write a message you\'d like to send to the group and label it.</string>
     <string name="prompt_message_label">Message label</string>
     <string name="prompt_message_text">Message text</string>
     <string name="action_create_message">Create message (this doesn\'t send it)</string>
     <string name="action_delete_message">Delete message</string>
+
+    <!-- Strings related to CreateMessageFragment -->
+    <string name="action_edit_message">Edit message</string>
+    <string name="text_edit_message">Edit your message label or text</string>
 
     <!-- Strings related to SendMessageActivity -->
     <string name="text_group_name">Group name</string>
@@ -62,11 +67,14 @@
 
     <!-- Strings related to ContactsActivity -->
     <string name="text_contacts">Contacts</string>
+    <string name="text_add_contact">Add contact</string>
+
 
     <!-- Strings related to HistoryActivity -->
     <string name="text_history">History</string>
 
     <!-- Strings related to SettingsFragment -->
     <string name="text_settings">Settings</string>
+    <string name="text_log_out">Log out</string>
 
 </resources>

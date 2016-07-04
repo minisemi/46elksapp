@@ -7,36 +7,16 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="a46elks.a46elksapp.contacts.ContactsActivity"
+    tools:context="a46elks.a46elksapp.tabLayout.ContactsFragment"
     android:orientation="vertical"
     android:background="@android:color/background_light">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2.35"
-        android:weightSum="1"
-        android:layout_marginBottom="10dp"
-        android:background="@android:color/background_light">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton8"
-            android:src="@android:drawable/ic_menu_revert"
-            android:layout_weight="0"
-            android:layout_gravity="center" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView6"
-            android:src="@drawable/header1"
-            android:layout_weight="7"
-            android:background="@android:color/transparent"
-            android:layout_gravity="center" />
-    </LinearLayout>
+        android:text="@string/text_add_contact"
+        android:id="@+id/action_add_contact"
+        android:layout_gravity="center" />
 
     <LinearLayout
         android:orientation="vertical"
