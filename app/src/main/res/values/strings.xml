@@ -58,12 +58,20 @@
     <string name="action_edit_message">Edit message</string>
     <string name="text_edit_message">Edit your message label or text</string>
 
-    <!-- Strings related to SendMessageActivity -->
+    <!-- Strings related to SendMessageFragment -->
     <string name="text_group_name">Group name</string>
-    <string name="text_message_name">Messsage name</string>
+    <string name="text_group_name_ftu">Visitors</string>
+    <string name="text_message_name_ftu">Send your first SMS!</string>
+    <string name="text_message_name">Send an SMS!</string>
     <string name="action_send_message">Send message</string>
-    <string name="text_message">This is an example of how the text message might look. Sasfas jnasn
-    jsadjasi pjsadjdsa jop ooasdj jas kd ksadkasdkadks kadsksak end of message.</string>
+    <string name="text_message">Hi!
+        \n
+        \nThis is an example of how the text message might look,
+        containing some information for the receiver.
+    \n
+    \nBest regards,
+    \n
+    \nSender</string>
 
     <!-- Strings related to ContactsActivity -->
     <string name="text_contacts">Contacts</string>

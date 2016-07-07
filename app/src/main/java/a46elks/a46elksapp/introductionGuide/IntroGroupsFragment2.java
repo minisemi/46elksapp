@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.tabLayout.TabLayoutActivity;
 
 /**
  * Created by Alexander on 2016-06-29.
@@ -59,7 +60,12 @@ public class IntroGroupsFragment2 extends android.support.v4.app.Fragment{
         view.findViewById(R.id.action_populate_group).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            IntroTabLayoutActivity.viewPager.setCurrentItem(2, true);
+
+                // Remove CreateMessageFragment if this is not used
+            //IntroTabLayoutActivity.viewPager.setCurrentItem(2, true);
+
+                Intent intent = new Intent(getActivity(), TabLayoutActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -36,6 +36,7 @@ import java.util.List;
 
 import a46elks.a46elksapp.introductionGuide.AccountCreationActivity;
 import a46elks.a46elksapp.introductionGuide.IntroTabLayoutActivity;
+import a46elks.a46elksapp.tabLayout.TabLayoutActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

@@ -2,6 +2,8 @@ package a46elks.a46elksapp.tabLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,7 @@ import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
 /**
  * Created by Alexander on 2016-06-29.
  */
-public class SettingsFragment extends android.support.v4.app.Fragment{
+public class SettingsFragment extends Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
 

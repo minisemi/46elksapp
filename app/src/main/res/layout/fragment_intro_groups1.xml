@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".introductionGuide.GroupsActivity1"
+    tools:context=".introductionGuide.IntroGroupsFragment1"
     android:orientation="vertical"
     android:background="@android:color/background_light">
 
@@ -44,7 +44,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_weight="0"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="17dp" />
 
         <EditText
             android:layout_width="wrap_content"

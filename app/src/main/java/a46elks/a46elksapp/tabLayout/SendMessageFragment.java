@@ -7,6 +7,12 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import a46elks.a46elksapp.R;
 import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
@@ -17,6 +23,9 @@ import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
 public class SendMessageFragment extends android.support.v4.app.Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
+    public static final String LISTVIEWADAPTER_ACTION = "RECEIVER";
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
 
     private int mPage;
 
@@ -74,5 +83,26 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
 
             }
         });
+
+        //String[] values = new String[] { "Jonas", "Fredrik" };
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+        listDataHeader.add("Co-Workers");
+        listDataHeader.add("Visitors");
+
+        List<String> coWorkers = new ArrayList<String>();
+        coWorkers.add("Carl");
+        coWorkers.add("Fredrik");
+        coWorkers.add("Johan");
+        List<String> visitors = new ArrayList<String>();
+        visitors.add("Kajsa");
+
+        listDataChild.put(listDataHeader.get(0), coWorkers); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), visitors);
+
+        ExpandableListView expandableListView = (ExpandableListView)  view.findViewById(R.id.expand_receivers);
+
+        mExpandableListAdapter adapter = new mExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        expandableListView.setAdapter(adapter);
     }
 }
