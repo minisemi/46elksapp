@@ -16,6 +16,7 @@ import java.util.List;
 
 import a46elks.a46elksapp.R;
 import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
+import a46elks.a46elksapp.serverConnection.HttpAsyncTask;
 
 /**
  * Created by Alexander on 2016-06-29.
@@ -24,8 +25,9 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String LISTVIEWADAPTER_ACTION = "RECEIVER";
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    private List<String> listDataHeader;
+    private HashMap<String, List<String>> listDataChild;
+    private SendMessageFragment sendMessageFragment = this;
 
     private int mPage;
 
@@ -79,12 +81,13 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
             @Override
             public void onClick(View v) {
 
-                Snackbar.make(v,"Message Sent", Snackbar.LENGTH_SHORT).show();
+                HttpAsyncTask smsAsyncTask = new HttpAsyncTask(sendMessageFragment, listDataChild);
+                smsAsyncTask.execute();
+
 
             }
         });
 
-        //String[] values = new String[] { "Jonas", "Fredrik" };
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
         listDataHeader.add("Co-Workers");
@@ -104,5 +107,11 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
 
         mExpandableListAdapter adapter = new mExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
         expandableListView.setAdapter(adapter);
+    }
+
+    public void makeSnackBar (){
+        Snackbar.make(getView(),"Message Sent", Snackbar.LENGTH_SHORT).show();
+
+
     }
 }

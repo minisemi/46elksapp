@@ -2,11 +2,15 @@ package a46elks.a46elksapp.tabLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.PermissionRequest;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import a46elks.a46elksapp.LoginActivity;
@@ -55,4 +59,21 @@ public class SettingsFragment extends Fragment{
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        /*WebView wv = new WebView(this);
+        setContentView(wv);
+        wv.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onPermissionRequest(PermissionRequest request) {
+                request.grant(request.getResources());
+            }
+        });
+        wv.getSettings().setJavaScriptEnabled(true);
+        wv.getSettings().setAllowContentAccess(true);
+        wv.getSettings().setAllowUniversalAccessFromFileURLs(true);
+        wv.getSettings().setDomStorageEnabled(true);
+        wv.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);*/
+    }
 }
