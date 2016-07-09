@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onClick(View v) {
                 //attemptLogin();
                 //checkFirstTimeUser();
-                Intent intent = new Intent(context, IntroTabLayoutActivity.class);
+                Intent intent = new Intent(context, TabLayoutActivity.class);
                 startActivity(intent);
 
             }

@@ -79,9 +79,9 @@ public class ContactsFragment extends Fragment{
         String[] values = new String[] { "Jonas", "Fredrik" };
 
         ListView contactsList = (ListView) view.findViewById(R.id.expand_receivers);
-        ContactsAdapter adapter = new ContactsAdapter(getActivity(), LISTVIEWADAPTER_ACTION, values);
+        //ContactsAdapter adapter = new ContactsAdapter(getActivity(), LISTVIEWADAPTER_ACTION, values);
         //setListAdapter(adapter);
-        contactsList.setAdapter(adapter);
+        //contactsList.setAdapter(adapter);
     }
 }
 
