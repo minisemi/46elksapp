@@ -21,10 +21,10 @@ public class mExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<String, List<Contact>> _listDataChild;
 
     public mExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<Contact>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -44,8 +44,9 @@ public class mExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
+        final Contact child = (Contact) getChild(groupPosition, childPosition);
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final String childText = child.getReceiverName()+": "+child.getNumber();
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context

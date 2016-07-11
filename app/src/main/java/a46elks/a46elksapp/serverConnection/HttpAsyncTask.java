@@ -2,8 +2,6 @@ package a46elks.a46elksapp.serverConnection;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.util.Base64;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -14,9 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import a46elks.a46elksapp.tabLayout.SendMessageFragment;
@@ -32,8 +28,13 @@ public class HttpAsyncTask extends AsyncTask{
     private JsonArray data;
     private SendMessageFragment sendMessageFragment;
     private HashMap expandableListRows;
+    private String senderName, receiverNumber;
+    private String message;
 
-    public HttpAsyncTask(SendMessageFragment sendMessageFragment, HashMap expandableListRows){
+    public HttpAsyncTask(SendMessageFragment sendMessageFragment, String message, String senderName, String receiverNumber){
+        this.senderName = senderName;
+        this.receiverNumber = receiverNumber;
+        this.message = message;
         this.context = context;
         this.expandableListRows = expandableListRows;
         this.sendMessageFragment = sendMessageFragment;
@@ -43,11 +44,13 @@ public class HttpAsyncTask extends AsyncTask{
     protected Object doInBackground(Object[] params) {
 
                 String line = null;
+
             try {
+
                 // Construct POST data
-                String data = URLEncoder.encode("from", "UTF-8") + "=" + URLEncoder.encode("Alexander", "UTF-8");
-                data += "&" + URLEncoder.encode("to", "UTF-8") + "=" + URLEncoder.encode("+46707142760", "UTF-8");
-                data += "&" + URLEncoder.encode("message", "UTF-8") + "=" + URLEncoder.encode("TEST SMS", "UTF-8");
+                String data = URLEncoder.encode("from", "UTF-8") + "=" + URLEncoder.encode(senderName, "UTF-8");
+                data += "&" + URLEncoder.encode("to", "UTF-8") + "=" + URLEncoder.encode(receiverNumber, "UTF-8");
+                data += "&" + URLEncoder.encode("message", "UTF-8") + "=" + URLEncoder.encode(message, "UTF-8");
 
                 // Make HTTP POST request
                 URL url = new URL("https://api.46elks.com/a1/SMS");
@@ -55,9 +58,11 @@ public class HttpAsyncTask extends AsyncTask{
 
                 String username = "u1d80044b7d60dcc0aa2f3dfcac7cfc96";
                 String password = "3EF1A94C6A16733E1AAF6589DA3B3DE3";
-                //String base64string = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes("UTF-8"));
-                String base64string = android.util.Base64.encodeToString((username + ":" + password).getBytes("UTF-8"), Base64.DEFAULT);
-                String basicAuth = "Basic dTFkODAwNDRiN2Q2MGRjYzBhYTJmM2RmY2FjN2NmYzk2OjNFRjFBOTRDNkExNjczM0UxQUFGNjU4OURBM0IzREUz";
+                //String base64string1 = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes("UTF-8"));
+                //String base64string2 = android.util.Base64.encodeToString((username + ":" + password).getBytes("UTF-8"), Base64.DEFAULT);
+                byte[] encodedBytes = org.apache.commons.codec.binary.Base64.encodeBase64((username + ":" + password).getBytes("UTF-8"));
+                String base64string = new String(encodedBytes);
+                String basicAuth = "Basic " + base64string;
                 conn.setRequestProperty("Authorization", basicAuth);
                 conn.setRequestProperty("Content-Length", Integer.toString(data.getBytes("UTF-8").length));
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -66,14 +71,20 @@ public class HttpAsyncTask extends AsyncTask{
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write(data);
                 wr.flush();
+                wr.close();
 
                 // Handle response data here (currently, just print out response)
+                try {
+
                 BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 while ((line = rd.readLine()) != null) {
                     System.out.println(line);
                 }
-                wr.close();
                 rd.close();
+                } catch(NullPointerException n){
+                    System.out.println("No errors received from server");
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

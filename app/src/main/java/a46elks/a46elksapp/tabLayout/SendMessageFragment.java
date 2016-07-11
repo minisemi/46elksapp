@@ -7,11 +7,13 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
@@ -26,8 +28,9 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String LISTVIEWADAPTER_ACTION = "RECEIVER";
     private List<String> listDataHeader;
-    private HashMap<String, List<String>> listDataChild;
+    private HashMap<String, List<Contact>> listDataChild;
     private SendMessageFragment sendMessageFragment = this;
+    private EditText editTextMessage;
 
     private int mPage;
 
@@ -77,28 +80,46 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
             }
         });
 
+        view.findViewById(R.id.action_add_message).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), CreateMessageActivity.class);
+                startActivity(intent);
+                //startwaitforresponsintent..
+            }
+        });
+
+        editTextMessage = (EditText) view.findViewById(R.id.editText_send_message);
+
         view.findViewById(R.id.action_send_message).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                HttpAsyncTask smsAsyncTask = new HttpAsyncTask(sendMessageFragment, listDataChild);
-                smsAsyncTask.execute();
+                for (List<Contact> children : listDataChild.values()){
 
+                    for (Contact receiver : children) {
+                        final String receiverNumber = receiver.getNumber();
+                        HttpAsyncTask smsAsyncTask = new HttpAsyncTask(sendMessageFragment, editTextMessage.getText().toString(), "a46Elks", receiverNumber);
+                        smsAsyncTask.execute();
+                    }
+
+                }
 
             }
         });
 
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
         listDataHeader.add("Co-Workers");
         listDataHeader.add("Visitors");
 
-        List<String> coWorkers = new ArrayList<String>();
-        coWorkers.add("Carl");
-        coWorkers.add("Fredrik");
-        coWorkers.add("Johan");
-        List<String> visitors = new ArrayList<String>();
-        visitors.add("Kajsa");
+        List<Contact> coWorkers = new ArrayList<>();
+        Contact alexander = new Contact("Alexander", "+46707142760");
+        coWorkers.add(alexander);
+        List<Contact> visitors = new ArrayList<>();
+        Contact martin = new Contact("Martin", "+46700000000");
+        visitors.add(martin);
 
         listDataChild.put(listDataHeader.get(0), coWorkers); // Header, Child data
         listDataChild.put(listDataHeader.get(1), visitors);
@@ -111,7 +132,6 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
 
     public void makeSnackBar (){
         Snackbar.make(getView(),"Message Sent", Snackbar.LENGTH_SHORT).show();
-
 
     }
 }
