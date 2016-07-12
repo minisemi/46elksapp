@@ -68,6 +68,7 @@ public class IntroGroupsFragment2 extends android.support.v4.app.Fragment{
                 startActivity(intent);
             }
         });
+
     }
 }
 

@@ -33,13 +33,13 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter{
         switch (position +1){
 
             case 1:
-                return SendMessageFragment.newInstance(position + 1);
+                return ContactsFragment.newInstance(position + 1);
 
             case 2:
                 return GroupsFragment.newInstance(position + 1);
 
             case 3:
-                return ContactsFragment.newInstance(position + 1);
+                return SendMessageFragment.newInstance(position + 1);
 
             case 4:
                 return HistoryFragment.newInstance(position + 1);
@@ -49,4 +49,5 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter{
         }
         return null;
     }
+    
 }

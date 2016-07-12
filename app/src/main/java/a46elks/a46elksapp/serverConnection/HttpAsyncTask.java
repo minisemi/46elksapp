@@ -31,9 +31,8 @@ public class HttpAsyncTask extends AsyncTask{
     private String senderName, receiverNumber;
     private String message;
 
-    public HttpAsyncTask(SendMessageFragment sendMessageFragment, String message, String senderName, String receiverNumber){
+    public HttpAsyncTask(SendMessageFragment sendMessageFragment, String message, String senderName){
         this.senderName = senderName;
-        this.receiverNumber = receiverNumber;
         this.message = message;
         this.context = context;
         this.expandableListRows = expandableListRows;
@@ -43,7 +42,8 @@ public class HttpAsyncTask extends AsyncTask{
     @Override
     protected Object doInBackground(Object[] params) {
 
-                String line = null;
+        String receiverNumber = params[0].toString();
+        String line = null;
 
             try {
 
@@ -134,19 +134,6 @@ public class HttpAsyncTask extends AsyncTask{
         super.onPostExecute(o);
 
         sendMessageFragment.makeSnackBar();
-
-        /*object = (JsonObject) parser.parse(result);
-        data = (JsonArray) object.get("data");
-        markerList.clear();
-
-        for (JsonElement e : data) {
-            JsonObject o = e.getAsJsonObject();
-            double lat = o.get("lat").getAsDouble();
-            double lon = o.get("lon").getAsDouble();
-            String event = o.get("event").getAsString();
-            markerList.add(String.valueOf(lat) + ";" + String.valueOf(lon) + ";" + event + ";:local");
-            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title("Pågående ärende:").snippet(event));
-        }*/
 
     }
 }

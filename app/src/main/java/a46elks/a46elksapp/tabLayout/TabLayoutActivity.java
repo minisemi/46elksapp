@@ -19,16 +19,16 @@ public class TabLayoutActivity extends AppCompatActivity {
     public static String POSITION = "POSITION";
     final int PAGE_COUNT = 5;
     private int[] tabIcons = {
-            R.drawable.ic_send_message,
-            R.drawable.ic_groups,
             R.drawable.ic_contacts,
+            R.drawable.ic_groups,
+            R.drawable.ic_send_message,
             R.drawable.ic_history,
             R.drawable.ic_user_page
     };
     private int[] selectedTabIcons = {
-            R.drawable.ic_send_message_selected,
-            R.drawable.ic_groups_selected,
             R.drawable.ic_contacts_selected,
+            R.drawable.ic_groups_selected,
+            R.drawable.ic_send_message_selected,
             R.drawable.ic_history_selected,
             R.drawable.ic_user_page_selected
     };
@@ -48,9 +48,10 @@ public class TabLayoutActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        for (int i = 1; i<PAGE_COUNT; i++){ tabLayout.getTabAt(i).setIcon(selectedTabIcons[i]);}
-        tabLayout.getTabAt(0).setText(getPageTitle(0));
-        lastSelectedTab = tabLayout.getTabAt(0);
+        for (int i = 0; i<PAGE_COUNT; i++){ tabLayout.getTabAt(i).setIcon(selectedTabIcons[i]);}
+        //tabLayout.getTabAt(2).setText(getPageTitle(2));
+        viewPager.setCurrentItem(2);
+        lastSelectedTab = tabLayout.getTabAt(2);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -75,6 +76,8 @@ public class TabLayoutActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     // Switches between icons and text because text is larger
     protected void fadeLastSelectedTab (){
