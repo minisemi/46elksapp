@@ -31,7 +31,7 @@ public class HttpAsyncTask extends AsyncTask{
     private String senderName, receiverNumber;
     private String message;
 
-    public HttpAsyncTask(SendMessageFragment sendMessageFragment, String message, String senderName){
+    public HttpAsyncTask(String message, String senderName){
         this.senderName = senderName;
         this.message = message;
         this.context = context;
@@ -133,7 +133,7 @@ public class HttpAsyncTask extends AsyncTask{
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
 
-        sendMessageFragment.makeSnackBar();
+       // sendMessageFragment.makeSnackBar();
 
     }
 }

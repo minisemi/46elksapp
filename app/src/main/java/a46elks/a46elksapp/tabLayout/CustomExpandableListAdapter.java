@@ -16,15 +16,15 @@ import a46elks.a46elksapp.R;
 /**
  * Created by Alexander on 2016-07-05.
  */
-public class mExpandableListAdapter extends BaseExpandableListAdapter {
+public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<Contact>> _listDataChild;
 
-    public mExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<Contact>> listChildData) {
+    public CustomExpandableListAdapter(Context context, List<String> listDataHeader,
+                                       HashMap<String, List<Contact>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -55,7 +55,7 @@ public class mExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.firstLine);
+                .findViewById(R.id.text_contact_description);
 
         txtListChild.setText(childText);
         return convertView;

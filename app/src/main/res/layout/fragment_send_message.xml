@@ -88,16 +88,6 @@
         android:layout_height="fill_parent"
         android:layout_weight="1.8" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/text_group_name_ftu"
-            android:id="@+id/textView5"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0"
-            android:layout_marginBottom="10dp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"

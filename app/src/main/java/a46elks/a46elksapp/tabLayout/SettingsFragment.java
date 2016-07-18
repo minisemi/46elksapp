@@ -33,11 +33,15 @@ public class SettingsFragment extends Fragment{
         fragment.setArguments(args);
         return fragment;
     }
+    public static SettingsFragment newInstance() {
+        SettingsFragment fragment = new SettingsFragment();
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+      //  mPage = getArguments().getInt(ARG_PAGE);
     }
 
     @Override

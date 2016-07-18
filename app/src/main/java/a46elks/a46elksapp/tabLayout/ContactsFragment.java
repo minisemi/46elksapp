@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import a46elks.a46elksapp.R;
 
@@ -22,6 +21,7 @@ public class ContactsFragment extends Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String LISTVIEWADAPTER_ACTION = "ADDRESS_BOOK";
+    private List<String> contactsList;
 
     private int mPage;
 
@@ -33,10 +33,15 @@ public class ContactsFragment extends Fragment{
         return fragment;
     }
 
+    public static ContactsFragment newInstance() {
+        ContactsFragment fragment = new ContactsFragment();
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+       // mPage = getArguments().getInt(ARG_PAGE);
 
     }
 
@@ -48,7 +53,7 @@ public class ContactsFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         String[] values = new String[] { "Jonas", "Fredrik" };
 
-        ContactsAdapter adapter = new ContactsAdapter(getActivity(), values);
+        CustomListViewAdapter adapter = new CustomListViewAdapter(getActivity(), values);
         setListAdapter(adapter);
     }*/
 
@@ -76,12 +81,13 @@ public class ContactsFragment extends Fragment{
         });
 
 
-        String[] values = new String[] { "Jonas", "Fredrik" };
 
-        ListView contactsList = (ListView) view.findViewById(R.id.expand_receivers);
-        //ContactsAdapter adapter = new ContactsAdapter(getActivity(), LISTVIEWADAPTER_ACTION, values);
-        //setListAdapter(adapter);
-        //contactsList.setAdapter(adapter);
+
+        ListView contactsListView = (ListView) view.findViewById(R.id.listView_contacts);
+        contactsList = new ArrayList<>();
+        contactsList.add("hej");
+        CustomListViewAdapter contactsListViewAdapter = new CustomListViewAdapter(getContext(), LISTVIEWADAPTER_ACTION, contactsList);
+        contactsListView.setAdapter(contactsListViewAdapter);
     }
 }
 

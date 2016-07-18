@@ -10,9 +10,13 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
-import a46elks.a46elksapp.R;
+import java.util.HashMap;
+import java.util.List;
 
-public class TabLayoutActivity extends AppCompatActivity {
+import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.serverConnection.HttpAsyncTask;
+
+public class TabLayoutActivity extends AppCompatActivity implements FragmentCommunicator {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -32,8 +36,15 @@ public class TabLayoutActivity extends AppCompatActivity {
             R.drawable.ic_history_selected,
             R.drawable.ic_user_page_selected
     };
-
     private TabLayout.Tab lastSelectedTab;
+    private SampleFragmentPagerAdapter sampleFragmentPagerAdapter;
+    private final int
+            CONTACTS_POSITION = 0,
+            GROUPS_POSITION = 1,
+            SEND_MESSAGE_POSITION = 2,
+            HISTORY_POSITION = 3,
+            USER_PAGE_POSITION = 4;
+    private HistoryFragment historyFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +53,15 @@ public class TabLayoutActivity extends AppCompatActivity {
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager()));
+        sampleFragmentPagerAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(sampleFragmentPagerAdapter);
+
+        //viewPager.setOffscreenPageLimit(4);
 
         // Give the TabLayout the ViewPager
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
 
         for (int i = 0; i<PAGE_COUNT; i++){ tabLayout.getTabAt(i).setIcon(selectedTabIcons[i]);}
         //tabLayout.getTabAt(2).setText(getPageTitle(2));
@@ -65,19 +80,13 @@ public class TabLayoutActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) {            }
         });
 
     }
-
-
 
     // Switches between icons and text because text is larger
     protected void fadeLastSelectedTab (){
@@ -95,6 +104,53 @@ public class TabLayoutActivity extends AppCompatActivity {
         ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
         sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sb;
+    }
+
+    public void onSmsSent(String message, String senderName, HashMap<String, List<Contact>> listDataChild) {
+        // The user selected the headline of an article from the HeadlinesFragment
+        // Do something here to display that article
+
+
+
+        historyFragment = (HistoryFragment) sampleFragmentPagerAdapter.getItem(HISTORY_POSITION);
+
+        if (historyFragment != null) {
+            // If historyfragment is available, we're in two-pane layout...
+
+            // Call a method in the HistoryFragment to update its content
+            historyFragment.addEvent();
+        } else {
+            /*// Otherwise, we're in the one-pane layout and must swap frags...
+
+            // Create fragment and give it an argument for the selected article
+            HistoryFragment newFragment = new HistoryFragment();
+            Bundle args = new Bundle();
+            args.putInt(HistoryFragment.ARG_POSITION, position);
+            newFragment.setArguments(args);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();*/
+        }
+
+
+        for (List<Contact> children : listDataChild.values()){
+
+
+            for (Contact receiver : children) {
+
+                final String receiverNumber = receiver.getNumber();
+                HttpAsyncTask smsAsyncTask = new HttpAsyncTask(message, senderName);
+                smsAsyncTask.execute(receiverNumber);
+            }
+
+        }
     }
 
     @Override

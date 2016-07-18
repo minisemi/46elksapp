@@ -1,5 +1,6 @@
 package a46elks.a46elksapp.tabLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,16 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
-import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
-import a46elks.a46elksapp.serverConnection.HttpAsyncTask;
 
 /**
  * Created by Alexander on 2016-06-29.
@@ -31,6 +28,7 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
     private HashMap<String, List<Contact>> listDataChild;
     private SendMessageFragment sendMessageFragment = this;
     private EditText editTextMessage;
+    private FragmentCommunicator fragmentCommunicator;
 
     private int mPage;
 
@@ -41,13 +39,40 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
         fragment.setArguments(args);
         return fragment;
     }
+    public static SendMessageFragment newInstance() {
+        SendMessageFragment fragment = new SendMessageFragment();
+        return fragment;
+    }
+
+    // Container Activity must implement this interface
+   /* public interface OnEventStartedListener {
+        public void onSmsSent(String message, String senderName, HashMap<String, List<Contact>> listDataChild);
+
+    }*/
+
+    // Might need to use Activity instead of context in this method
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            fragmentCommunicator = (FragmentCommunicator) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnEventStartedListener");
+        }
+    }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+       // mPage = getArguments().getInt(ARG_PAGE);
 
-        setRetainInstance(true);
+
     }
 
     @Override
@@ -55,6 +80,7 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_send_message, container, false);
+     //   setRetainInstance(true);
         return view;
     }
 
@@ -98,16 +124,10 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
             @Override
             public void onClick(View v) {
 
-                for (List<Contact> children : listDataChild.values()){
+                // Send the event to the host activity
+                fragmentCommunicator.onSmsSent(editTextMessage.getText().toString(), "a46elks", listDataChild);
 
-                    for (Contact receiver : children) {
 
-                        final String receiverNumber = receiver.getNumber();
-                        HttpAsyncTask smsAsyncTask = new HttpAsyncTask(sendMessageFragment, editTextMessage.getText().toString(), "a46Elks");
-                        smsAsyncTask.execute(receiverNumber);
-                    }
-
-                }
 
             }
         });
@@ -148,7 +168,7 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
 
         ExpandableListView expandableListView = (ExpandableListView)  view.findViewById(R.id.expand_receivers);
 
-        mExpandableListAdapter adapter = new mExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        CustomExpandableListAdapter adapter = new CustomExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
         expandableListView.setAdapter(adapter);
     }
 

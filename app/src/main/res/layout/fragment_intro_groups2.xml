@@ -89,7 +89,7 @@
                         <ListView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/listView_import_contacts"
+                            android:id="@+id/listView_contacts"
                             android:layout_gravity="center_horizontal" />
                     </LinearLayout>
 

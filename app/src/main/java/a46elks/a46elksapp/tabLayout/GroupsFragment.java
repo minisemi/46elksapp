@@ -31,7 +31,7 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+       // mPage = getArguments().getInt(ARG_PAGE);
 
     }
 

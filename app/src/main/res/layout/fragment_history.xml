@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="a46elks.a46elksapp.tabLayout.HistoryFragment"
     android:orientation="vertical"
+    android:id="@+id/fragment_history"
     android:background="@android:color/background_light">
 
     <LinearLayout
@@ -29,7 +30,7 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listView6"
+            android:id="@+id/listView_history"
             android:layout_weight="0" />
     </LinearLayout>
 </LinearLayout>
