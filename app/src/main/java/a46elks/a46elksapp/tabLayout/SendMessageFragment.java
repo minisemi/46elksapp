@@ -129,6 +129,7 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
 
 
 
+
             }
         });
 
@@ -142,29 +143,16 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
         coWorkers.add(alexander);
         List<Contact> visitors = new ArrayList<>();
         Contact martin = new Contact("Martin", "+46700000000");
-        Contact martin2 = new Contact("Martin", "+46700000000");
-        Contact martin3 = new Contact("Martin", "+46700000000");
-        Contact martin4 = new Contact("Martin", "+46700000000");
-        Contact martin5 = new Contact("Martin", "+46700000000");
-        Contact martin6 = new Contact("Martin", "+46700000000");
-        Contact martin7 = new Contact("Martin", "+46700000000");
-        Contact martin8 = new Contact("Martin", "+46700000000");
-        Contact martin9 = new Contact("Martin", "+46700000000");
-        visitors.add(martin);
-        visitors.add(martin2);
-        visitors.add(martin3);
-        visitors.add(martin4);
-        visitors.add(martin5);
-        visitors.add(martin6);
-        visitors.add(martin7);
-        visitors.add(martin8);
-        visitors.add(martin9);
-        for (int i = 0; i < 100; i++) {
-            visitors.add(martin9);
+        //visitors.add(martin);
+
+        for (int i = 1; i < 100; i++) {
+            visitors.add(martin);
         }
 
         listDataChild.put(listDataHeader.get(0), coWorkers); // Header, Child data
         listDataChild.put(listDataHeader.get(1), visitors);
+
+
 
         ExpandableListView expandableListView = (ExpandableListView)  view.findViewById(R.id.expand_receivers);
 

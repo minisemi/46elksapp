@@ -45,6 +45,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             HISTORY_POSITION = 3,
             USER_PAGE_POSITION = 4;
     private HistoryFragment historyFragment;
+    private int eventID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
         sampleFragmentPagerAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sampleFragmentPagerAdapter);
 
-        //viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(4);
 
         // Give the TabLayout the ViewPager
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -116,9 +117,10 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
 
         if (historyFragment != null) {
             // If historyfragment is available, we're in two-pane layout...
+            String numberOfSentSMS = Integer.toString(listDataChild.size());
 
             // Call a method in the HistoryFragment to update its content
-            historyFragment.addEvent();
+            historyFragment.addEvent(numberOfSentSMS+" SMS sent!", eventID, listDataChild.size());
         } else {
             /*// Otherwise, we're in the one-pane layout and must swap frags...
 
@@ -139,18 +141,22 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             transaction.commit();*/
         }
 
+        viewPager.setCurrentItem(3, true);
+        int connectionID = 0;
 
         for (List<Contact> children : listDataChild.values()){
-
 
             for (Contact receiver : children) {
 
                 final String receiverNumber = receiver.getNumber();
-                HttpAsyncTask smsAsyncTask = new HttpAsyncTask(message, senderName);
-                smsAsyncTask.execute(receiverNumber);
+                HttpAsyncTask smsAsyncTask = new HttpAsyncTask(eventID, historyFragment, message, senderName);
+                smsAsyncTask.execute(receiverNumber, connectionID);
+                connectionID++;
             }
 
         }
+        // Vill ha serverns tid (CET?) som id
+        eventID++;
     }
 
     @Override

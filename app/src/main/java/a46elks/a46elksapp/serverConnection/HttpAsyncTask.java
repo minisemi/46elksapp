@@ -15,6 +15,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
+import a46elks.a46elksapp.tabLayout.HistoryFragment;
 import a46elks.a46elksapp.tabLayout.SendMessageFragment;
 
 /**
@@ -30,8 +31,12 @@ public class HttpAsyncTask extends AsyncTask{
     private HashMap expandableListRows;
     private String senderName, receiverNumber;
     private String message;
+    private int eventID, connectionID;
+    private HistoryFragment historyFragment;
 
-    public HttpAsyncTask(String message, String senderName){
+    public HttpAsyncTask(int eventID, HistoryFragment historyFragment, String message, String senderName){
+        this.historyFragment = historyFragment;
+        this.eventID = eventID;
         this.senderName = senderName;
         this.message = message;
         this.context = context;
@@ -43,6 +48,7 @@ public class HttpAsyncTask extends AsyncTask{
     protected Object doInBackground(Object[] params) {
 
         String receiverNumber = params[0].toString();
+        connectionID = (Integer) params[1];
         String line = null;
 
             try {
@@ -80,6 +86,8 @@ public class HttpAsyncTask extends AsyncTask{
                 while ((line = rd.readLine()) != null) {
                     System.out.println(line);
                 }
+
+                    //kolla om error 200 (dvs att allt gick bra) och ingen ingen timeout, annars försök igen lr säg till användare natt det inte gick
                 rd.close();
                 } catch(NullPointerException n){
                     System.out.println("No errors received from server");
@@ -131,6 +139,7 @@ public class HttpAsyncTask extends AsyncTask{
 
     @Override
     protected void onPostExecute(Object o) {
+        historyFragment.updateProgress(eventID);
         super.onPostExecute(o);
 
        // sendMessageFragment.makeSnackBar();

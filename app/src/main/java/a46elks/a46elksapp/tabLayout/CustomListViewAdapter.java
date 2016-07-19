@@ -8,18 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
 
-public class CustomListViewAdapter extends ArrayAdapter<String> {
+public class CustomListViewAdapter extends ArrayAdapter {
     private final Context context;
     private final List<String> values;
     private final String LISTVIEWADAPTER_ACTION;
 
-    public CustomListViewAdapter(Context context, String LISTVIEWADAPTER_ACTION, List<String> values) {
+    public CustomListViewAdapter(Context context, String LISTVIEWADAPTER_ACTION, List values) {
         super(context, -1, values);
         this.context = context;
         this.values = values;
@@ -44,22 +46,42 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
                 //flytta till metoden
                 rowView = inflater.inflate(R.layout.list_item_contacts, parent, false);
                 textView = (TextView) rowView.findViewById(R.id.text_contact_description);
-                textView.setText(values.get(position));
+                //textView.setText(values.get(position));
                 return rowView;
 
             case "SETTINGS":
 
             case "HISTORY":
                 rowView = inflater.inflate(R.layout.list_item_history, parent, false);
-                textView = (TextView) rowView.findViewById(R.id.text_history_event                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           );
+                textView = (TextView) rowView.findViewById(R.id.text_history_event);
                 textView.setText(values.get(position));
+                //ProgressBar progressBar = (ProgressBar) rowView.findViewById(R.id.progressBar_history);
                 return rowView;
+
+            case "HISTORY_UPDATE":
+                rowView = inflater.inflate(R.layout.list_item_history, parent, false);
+                textView = (TextView) rowView.findViewById(R.id.text_history_event);
+                textView.setText(values.get(position));
+                //ProgressBar progressBar = (ProgressBar) rowView.findViewById(R.id.progressBar_history);
+                return rowView;
+
+            default:
+                rowView = convertView;
+                break;
+
         }
 
         //ImageView imageView = (ImageView) rowView.findViewById(R.id.listView_contact_picture);
         //textView.setText(values[position]);
 
         return rowView;
+    }
+
+
+
+    public void updateChild (int position){
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     protected void populateReceivers (){
@@ -69,4 +91,5 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
     protected void populateAddressBook (){
 
     }
+
 }
