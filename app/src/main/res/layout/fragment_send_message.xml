@@ -43,8 +43,7 @@
                 android:layout_weight="1"
                 android:singleLine="false"
                 android:textAlignment="gravity"
-                android:gravity="fill_horizontal"
-                android:editable="false"/>
+                android:gravity="fill_horizontal"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

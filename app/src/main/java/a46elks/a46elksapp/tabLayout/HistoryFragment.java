@@ -26,11 +26,10 @@ public class HistoryFragment extends Fragment{
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
-    private List<String> historyList;
+    private List<HistoryListItem> historyList;
     private ListView historyListView;
     private final String LISTVIEWADAPTER_ACTION = "HISTORY";
     private CustomListViewAdapter historyListViewAdapter;
-    private List<ProgressBar> activeProgressBars;
     private View childView;
     private ProgressBar progressBar;
 
@@ -50,8 +49,6 @@ public class HistoryFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // mPage = getArguments().getInt(ARG_PAGE);
-        historyList = new ArrayList();
-        activeProgressBars = new ArrayList<>();
     }
 
     @Override
@@ -66,6 +63,7 @@ public class HistoryFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        historyList = new ArrayList();
 
         historyListView = (ListView) view.findViewById(R.id.listView_history);
         historyListViewAdapter = new CustomListViewAdapter(getContext(), LISTVIEWADAPTER_ACTION, historyList);
@@ -76,9 +74,13 @@ public class HistoryFragment extends Fragment{
 
     public void addEvent (String eventInfo, int eventID, int numberOfSMS){
          //TextView historyEvent = (TextView) historyListView.getChildAt(eventID).findViewById(R.id.text_history_event);
-        //HistoryEvent historyEvent = new HistoryEvent();
-         historyList.add(eventInfo);
-         historyListViewAdapter.notifyDataSetChanged();
+        //HistoryListItem historyEvent = new HistoryListItem();
+        // historyList.add(eventInfo);
+         //historyListViewAdapter.notifyDataSetChanged();
+
+        HistoryListItem historyListItem = new HistoryListItem(eventID, eventInfo, numberOfSMS);
+        historyList.add(historyListItem);
+        historyListViewAdapter.notifyDataSetChanged();
         //childView = getViewByPosition(eventID, historyListView);
         //progressBar = (ProgressBar) childView.findViewById(R.id.progressBar_history);
         //progressBar.getId();
@@ -98,24 +100,23 @@ public class HistoryFragment extends Fragment{
 
     }
 
-    public void updateProgress (int eventID){
+    public void updateProgress (int eventID, int numberOfSMS){
+        historyList.get(eventID).updateProgress();
+        historyListViewAdapter.notifyDataSetChanged();
 
 
-        View view = getViewByPosition(eventID, historyListView);
+
+        /*View view = getViewByPosition(eventID, historyListView);
         ProgressBar progress = (ProgressBar) view.findViewById(R.id.progressBar_history);
+
+        if (progress.getMax()!=numberOfSMS){
+            progress.setMax(numberOfSMS);
+        }
         //int k = progress.getMax();
 
         progress.setProgress(progress.getProgress()+1);
-        view.refreshDrawableState();
+        view.refreshDrawableState();*/
         //historyListViewAdapter.notifyDataSetChanged();
-    }
-
-    public void setProgressMax (int eventID, int numberOfSMS){
-        View view = getViewByPosition(eventID, historyListView);
-        ProgressBar progress = (ProgressBar) view.findViewById(R.id.progressBar_history);
-
-        progress.setMax(numberOfSMS);
-        view.refreshDrawableState();
     }
 
     public View getViewByPosition(int pos, ListView listView) {

@@ -6,6 +6,7 @@ package a46elks.a46elksapp.tabLayout;
 public class Contact {
 
     private String number, receiverName;
+    private int contactID;
 
     public Contact (String receiverName, String number){
         this.number = number;
@@ -14,4 +15,6 @@ public class Contact {
 
     public String getNumber(){return number;}
     public String getReceiverName(){return receiverName;}
+    public int getContactID(){return contactID;}
+
 }

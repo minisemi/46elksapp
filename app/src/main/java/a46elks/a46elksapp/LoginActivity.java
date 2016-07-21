@@ -31,6 +31,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLrogressView;
     private View mLoginFormView;
+    private String apiUsername, apiPassword;
 
 
     @Override
@@ -94,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         mLoginFormView = findViewById(R.id.login_form);
-        //mProgressView = findViewById(R.id.login_progress);
+        mProgressView = findViewById(R.id.login_progress);
         Button loginButton;
         Button signupButton;
 
@@ -102,10 +109,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //attemptLogin();
+                attemptLogin();
                 //checkFirstTimeUser();
-                Intent intent = new Intent(context, TabLayoutActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(context, TabLayoutActivity.class);
+                //startActivity(intent);
 
             }
         });
@@ -338,7 +345,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mPassword;
 
         UserLoginTask(String email, String password) {
-            mEmail = email;
+            mEmail = email.toLowerCase();
             mPassword = password;
         }
 
@@ -346,10 +353,52 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            String line = null;
+
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                // Construct POST data
+                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(mEmail, "UTF-8");
+                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(mPassword, "UTF-8");
+
+                // Make HTTP POST request
+                URL url = new URL("https://dashboard.46elks.com/api/login.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                /*String username = "u1d80044b7d60dcc0aa2f3dfcac7cfc96";
+                String password = "3EF1A94C6A16733E1AAF6589DA3B3DE3";
+                //String base64string1 = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes("UTF-8"));
+                //String base64string2 = android.util.Base64.encodeToString((username + ":" + password).getBytes("UTF-8"), Base64.DEFAULT);
+                byte[] encodedBytes = org.apache.commons.codec.binary.Base64.encodeBase64((username + ":" + password).getBytes("UTF-8"));
+                String base64string = new String(encodedBytes);
+                String basicAuth = "Basic " + base64string;
+                conn.setRequestProperty("Authorization", basicAuth);
+                conn.setRequestProperty("Content-Length", Integer.toString(data.getBytes("UTF-8").length));
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");*/
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+                wr.close();
+
+                try {
+
+                    //BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                    while ((line = rd.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                    // PARSA FÖLJANDE INPUT: {"id":"u1d80044b7d60dcc0aa2f3dfcac7cfc96","secret":"3EF1A94C6A16733E1AAF6589DA3B3DE3"}
+                    // OCH SPARA TILL apiUsername och apiPassword
+
+                    //kolla om error 200 (dvs att allt gick bra) och ingen ingen timeout, annars försök igen lr säg till användare natt det inte gick
+                    rd.close();
+                } catch(NullPointerException n){
+                    System.out.println("No errors received from server");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
 

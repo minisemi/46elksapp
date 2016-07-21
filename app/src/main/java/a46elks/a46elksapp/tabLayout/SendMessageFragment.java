@@ -127,9 +127,6 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
                 // Send the event to the host activity
                 fragmentCommunicator.onSmsSent(editTextMessage.getText().toString(), "a46elks", listDataChild);
 
-
-
-
             }
         });
 
@@ -140,14 +137,15 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
 
         List<Contact> coWorkers = new ArrayList<>();
         Contact alexander = new Contact("Alexander", "+46707142760");
-        coWorkers.add(alexander);
+        //coWorkers.add(alexander);
         List<Contact> visitors = new ArrayList<>();
         Contact martin = new Contact("Martin", "+46700000000");
-        //visitors.add(martin);
+        visitors.add(martin);
 
-        for (int i = 1; i < 100; i++) {
+        for (int i = 1; i < 50; i++) {
             visitors.add(martin);
         }
+
 
         listDataChild.put(listDataHeader.get(0), coWorkers); // Header, Child data
         listDataChild.put(listDataHeader.get(1), visitors);

@@ -18,8 +18,10 @@ import a46elks.a46elksapp.R;
 
 public class CustomListViewAdapter extends ArrayAdapter {
     private final Context context;
-    private final List<String> values;
+    private final List<HistoryListItem> values;
     private final String LISTVIEWADAPTER_ACTION;
+
+    // Might wanna create a specific adapter for history, handling "HistoryEvents" instead of Strings
 
     public CustomListViewAdapter(Context context, String LISTVIEWADAPTER_ACTION, List values) {
         super(context, -1, values);
@@ -54,15 +56,10 @@ public class CustomListViewAdapter extends ArrayAdapter {
             case "HISTORY":
                 rowView = inflater.inflate(R.layout.list_item_history, parent, false);
                 textView = (TextView) rowView.findViewById(R.id.text_history_event);
-                textView.setText(values.get(position));
-                //ProgressBar progressBar = (ProgressBar) rowView.findViewById(R.id.progressBar_history);
-                return rowView;
-
-            case "HISTORY_UPDATE":
-                rowView = inflater.inflate(R.layout.list_item_history, parent, false);
-                textView = (TextView) rowView.findViewById(R.id.text_history_event);
-                textView.setText(values.get(position));
-                //ProgressBar progressBar = (ProgressBar) rowView.findViewById(R.id.progressBar_history);
+                textView.setText(values.get(position).getEventInfo());
+                ProgressBar progressBar = (ProgressBar) rowView.findViewById(R.id.progressBar_history);
+                progressBar.setMax(values.get(position).getProgressMax());
+                progressBar.setProgress(values.get(position).getProgress());
                 return rowView;
 
             default:
@@ -75,13 +72,6 @@ public class CustomListViewAdapter extends ArrayAdapter {
         //textView.setText(values[position]);
 
         return rowView;
-    }
-
-
-
-    public void updateChild (int position){
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     protected void populateReceivers (){

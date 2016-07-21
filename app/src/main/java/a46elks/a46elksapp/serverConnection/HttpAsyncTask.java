@@ -31,10 +31,11 @@ public class HttpAsyncTask extends AsyncTask{
     private HashMap expandableListRows;
     private String senderName, receiverNumber;
     private String message;
-    private int eventID, connectionID;
+    private int eventID, connectionID, numberOfSMS;
     private HistoryFragment historyFragment;
 
-    public HttpAsyncTask(int eventID, HistoryFragment historyFragment, String message, String senderName){
+    public HttpAsyncTask(int eventID, HistoryFragment historyFragment, String message, String senderName, int numberOfSMS){
+        this.numberOfSMS = numberOfSMS;
         this.historyFragment = historyFragment;
         this.eventID = eventID;
         this.senderName = senderName;
@@ -48,7 +49,6 @@ public class HttpAsyncTask extends AsyncTask{
     protected Object doInBackground(Object[] params) {
 
         String receiverNumber = params[0].toString();
-        connectionID = (Integer) params[1];
         String line = null;
 
             try {
@@ -139,7 +139,7 @@ public class HttpAsyncTask extends AsyncTask{
 
     @Override
     protected void onPostExecute(Object o) {
-        historyFragment.updateProgress(eventID);
+        historyFragment.updateProgress(eventID, numberOfSMS);
         super.onPostExecute(o);
 
        // sendMessageFragment.makeSnackBar();

@@ -87,6 +87,8 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             public void onTabReselected(TabLayout.Tab tab) {            }
         });
 
+        historyFragment = (HistoryFragment) sampleFragmentPagerAdapter.getItem(HISTORY_POSITION);
+
     }
 
     // Switches between icons and text because text is larger
@@ -111,16 +113,17 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
         // The user selected the headline of an article from the HeadlinesFragment
         // Do something here to display that article
 
+        int numberOfSMS = 0;
 
-
-        historyFragment = (HistoryFragment) sampleFragmentPagerAdapter.getItem(HISTORY_POSITION);
+        for (List<Contact> children : listDataChild.values()){
+            numberOfSMS = numberOfSMS + children.size();
+        }
 
         if (historyFragment != null) {
             // If historyfragment is available, we're in two-pane layout...
-            String numberOfSentSMS = Integer.toString(listDataChild.size());
 
             // Call a method in the HistoryFragment to update its content
-            historyFragment.addEvent(numberOfSentSMS+" SMS sent!", eventID, listDataChild.size());
+            historyFragment.addEvent(numberOfSMS+" SMS sent!", eventID, numberOfSMS);
         } else {
             /*// Otherwise, we're in the one-pane layout and must swap frags...
 
@@ -141,22 +144,23 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             transaction.commit();*/
         }
 
-        viewPager.setCurrentItem(3, true);
-        int connectionID = 0;
+            viewPager.setCurrentItem(3, true);
+            //int connectionID = 0;
+            //historyFragment.setProgressMax(eventID, listDataChild.size());
 
-        for (List<Contact> children : listDataChild.values()){
+            for (List<Contact> children : listDataChild.values()) {
 
-            for (Contact receiver : children) {
+                for (Contact receiver : children) {
 
-                final String receiverNumber = receiver.getNumber();
-                HttpAsyncTask smsAsyncTask = new HttpAsyncTask(eventID, historyFragment, message, senderName);
-                smsAsyncTask.execute(receiverNumber, connectionID);
-                connectionID++;
+                    final String receiverNumber = receiver.getNumber();
+                    HttpAsyncTask smsAsyncTask = new HttpAsyncTask(eventID, historyFragment, message, senderName, numberOfSMS);
+                    smsAsyncTask.execute(receiverNumber);
+                }
+
             }
+            // Vill ha serverns tid (CET?) som id
+            eventID++;
 
-        }
-        // Vill ha serverns tid (CET?) som id
-        eventID++;
     }
 
     @Override
