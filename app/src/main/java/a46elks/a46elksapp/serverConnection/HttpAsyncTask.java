@@ -15,6 +15,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
+import a46elks.a46elksapp.SessionManager;
 import a46elks.a46elksapp.tabLayout.HistoryFragment;
 import a46elks.a46elksapp.tabLayout.SendMessageFragment;
 
@@ -23,26 +24,23 @@ import a46elks.a46elksapp.tabLayout.SendMessageFragment;
  */
 public class HttpAsyncTask extends AsyncTask{
 
-    Context context;
     private JsonParser parser = new JsonParser();
     private JsonObject object;
     private JsonArray data;
     private SendMessageFragment sendMessageFragment;
     private HashMap expandableListRows;
-    private String senderName, receiverNumber;
-    private String message;
+    private String senderName, receiverNumber, message, apiUsername, apiPassword;
     private int eventID, connectionID, numberOfSMS;
     private HistoryFragment historyFragment;
 
-    public HttpAsyncTask(int eventID, HistoryFragment historyFragment, String message, String senderName, int numberOfSMS){
+    public HttpAsyncTask(int eventID, String apiUsername, String apiPassword, HistoryFragment historyFragment, String message, String senderName, int numberOfSMS){
         this.numberOfSMS = numberOfSMS;
+        this.apiPassword = apiPassword;
+        this.apiUsername = apiUsername;
         this.historyFragment = historyFragment;
         this.eventID = eventID;
         this.senderName = senderName;
         this.message = message;
-        this.context = context;
-        this.expandableListRows = expandableListRows;
-        this.sendMessageFragment = sendMessageFragment;
     }
 
     @Override
@@ -62,11 +60,9 @@ public class HttpAsyncTask extends AsyncTask{
                 URL url = new URL("https://api.46elks.com/a1/SMS");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-                String username = "u1d80044b7d60dcc0aa2f3dfcac7cfc96";
-                String password = "3EF1A94C6A16733E1AAF6589DA3B3DE3";
                 //String base64string1 = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes("UTF-8"));
                 //String base64string2 = android.util.Base64.encodeToString((username + ":" + password).getBytes("UTF-8"), Base64.DEFAULT);
-                byte[] encodedBytes = org.apache.commons.codec.binary.Base64.encodeBase64((username + ":" + password).getBytes("UTF-8"));
+                byte[] encodedBytes = org.apache.commons.codec.binary.Base64.encodeBase64((apiUsername + ":" + apiPassword).getBytes("UTF-8"));
                 String base64string = new String(encodedBytes);
                 String basicAuth = "Basic " + base64string;
                 conn.setRequestProperty("Authorization", basicAuth);
@@ -96,42 +92,6 @@ public class HttpAsyncTask extends AsyncTask{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-        /*try {
-            System.out.println("Sending SMS");
-
-
-            HttpResponse<String> response = Unirest.post("https://api.46elks.com/a1/SMS")
-                    .basicAuth("<API Username>","<API Password>")
-                    .field("to", "+46723175800")
-                    .field("from", "+46766862078")
-                    .field("message", "Hi! This is åäö a message from me! Have a nice day!")
-                    .asString();
-
-            HttpResponse<JsonNode> jsonResponse = Unirest.post("https://api.46elks.com/a1/SMS")
-                    .basicAuth("<API Username>","<API Password>")
-                    .field("to", "+46723175800")
-                    .field("from", "+46766862078")
-                    .field("message", "Hi! This is åäö a message from me! Have a nice day!")
-                    .asJson();
-
-            System.out.println(response.getBody());
-
-
-        }
-
-        catch (Exception e){
-            System.out.println(e);
-        }*/
-
-        /*Request addRequest = new Request(context,"add",addList, replicate).mapRequest();
-        connection = new Connection(addRequest, context);
-        t = new Thread(connection);
-        t.start();
-        do {
-            jsonString = connection.getJson();
-        } while (jsonString == null);
-        object = (JsonObject) parser.parse(jsonString);*/
 
 
         return line;

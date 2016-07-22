@@ -154,6 +154,7 @@
             android:id="@+id/action_populate_group"
             android:layout_below="@+id/tabHost"
             android:layout_centerHorizontal="true"
+            style="@style/ButtonTheme"
             android:layout_weight="0"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>

@@ -87,6 +87,7 @@
             android:id="@+id/action_intro_create_message"
             android:layout_below="@+id/prompt_message_text"
             android:layout_centerHorizontal="true"
+            style="@style/ButtonTheme"
             android:layout_weight="0"
             android:layout_gravity="center" />
     </LinearLayout>

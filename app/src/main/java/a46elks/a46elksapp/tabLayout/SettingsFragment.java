@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import a46elks.a46elksapp.LoginActivity;
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.SessionManager;
 import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
 
 /**
@@ -25,6 +26,7 @@ public class SettingsFragment extends Fragment{
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
+    private SessionManager sessionManager;
 
     public static SettingsFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -41,6 +43,8 @@ public class SettingsFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(getContext());
+
       //  mPage = getArguments().getInt(ARG_PAGE);
     }
 
@@ -53,6 +57,8 @@ public class SettingsFragment extends Fragment{
         view.findViewById(R.id.action_log_out).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                sessionManager.logoutUser();
 
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);

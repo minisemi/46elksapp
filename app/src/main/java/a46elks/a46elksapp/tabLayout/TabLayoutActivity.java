@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.SessionManager;
 import a46elks.a46elksapp.serverConnection.HttpAsyncTask;
 
 public class TabLayoutActivity extends AppCompatActivity implements FragmentCommunicator {
@@ -46,11 +47,13 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             USER_PAGE_POSITION = 4;
     private HistoryFragment historyFragment;
     private int eventID = 0;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_layout);
+        sessionManager = new SessionManager(this);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -145,6 +148,8 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
         }
 
             viewPager.setCurrentItem(3, true);
+            String apiUsername = sessionManager.getUserDetails().get("KEY_API_USERNAME");
+            String apiPassword = sessionManager.getUserDetails().get("KEY_API_PASSWORD");
             //int connectionID = 0;
             //historyFragment.setProgressMax(eventID, listDataChild.size());
 
@@ -153,7 +158,8 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
                 for (Contact receiver : children) {
 
                     final String receiverNumber = receiver.getNumber();
-                    HttpAsyncTask smsAsyncTask = new HttpAsyncTask(eventID, historyFragment, message, senderName, numberOfSMS);
+                    HttpAsyncTask smsAsyncTask = new HttpAsyncTask(eventID, apiUsername, apiPassword,
+                            historyFragment, message, senderName, numberOfSMS);
                     smsAsyncTask.execute(receiverNumber);
                 }
 

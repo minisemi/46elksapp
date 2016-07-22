@@ -158,6 +158,7 @@
         android:layout_below="@+id/tabHost"
         android:layout_centerHorizontal="true"
         android:layout_weight="0"
+        style="@style/ButtonTheme"
         android:layout_gravity="center_horizontal" />
 
 

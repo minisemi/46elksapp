@@ -135,14 +135,13 @@
     </LinearLayout>
 
     <Button
+        style="@style/ButtonTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/action_send_message"
         android:id="@+id/action_send_message"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorTextPrimary"/>
+        android:layout_weight="0"/>
 
 </LinearLayout>
 

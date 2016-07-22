@@ -73,6 +73,7 @@
         android:text="@string/action_create_message"
         android:id="@+id/action_create_message"
         android:layout_weight="0"
+        style="@style/ButtonTheme"
         android:layout_gravity="center" />
 
 </LinearLayout>

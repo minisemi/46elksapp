@@ -31,6 +31,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -41,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import a46elks.a46elksapp.introductionGuide.AccountCreationActivity;
-import a46elks.a46elksapp.introductionGuide.IntroTabLayoutActivity;
 import a46elks.a46elksapp.tabLayout.TabLayoutActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -77,17 +79,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLrogressView;
     private View mLoginFormView;
     private String apiUsername, apiPassword;
+    private SessionManager sessionManagemer;
+
+    // USE ALERTDIALOG TO DISPLAY POP-UP
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sessionManagemer = new SessionManager(context);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.prompt_email);
         populateAutoComplete();
+        mEmailView.setText("alexander@46elks.com");
 
         mPasswordView = (EditText) findViewById(R.id.prompt_password);
+        mPasswordView.setText("ufcadell9218");
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -99,6 +107,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
+
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -124,6 +134,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent intent = new Intent(context, AccountCreationActivity.class);
                 startActivity(intent);
 
+            }
+        });
+
+        mLoginFormView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (findViewById(R.id.text_invalid_user_credentials).getVisibility() == View.VISIBLE) {
+                    findViewById(R.id.text_invalid_user_credentials).setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -202,8 +221,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
         }
@@ -296,7 +315,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onBackPressed() {this.moveTaskToBack(true);}
+    public void onBackPressed() {
+        mAuthTask = null;
+        showProgress(false);
+        this.moveTaskToBack(true);
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
@@ -343,10 +366,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private JsonParser jsonParser;
+
 
         UserLoginTask(String email, String password) {
             mEmail = email.toLowerCase();
             mPassword = password;
+            jsonParser = new JsonParser();
         }
 
         @Override
@@ -364,17 +390,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 URL url = new URL("https://dashboard.46elks.com/api/login.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-                /*String username = "u1d80044b7d60dcc0aa2f3dfcac7cfc96";
-                String password = "3EF1A94C6A16733E1AAF6589DA3B3DE3";
-                //String base64string1 = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes("UTF-8"));
-                //String base64string2 = android.util.Base64.encodeToString((username + ":" + password).getBytes("UTF-8"), Base64.DEFAULT);
-                byte[] encodedBytes = org.apache.commons.codec.binary.Base64.encodeBase64((username + ":" + password).getBytes("UTF-8"));
-                String base64string = new String(encodedBytes);
-                String basicAuth = "Basic " + base64string;
-                conn.setRequestProperty("Authorization", basicAuth);
-                conn.setRequestProperty("Content-Length", Integer.toString(data.getBytes("UTF-8").length));
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");*/
-
                 conn.setDoOutput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write(data);
@@ -383,34 +398,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 try {
 
-                    //BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                   // BufferedReader sd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                     BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
+                    String receivedJson = null;
                     while ((line = rd.readLine()) != null) {
                         System.out.println(line);
+                        receivedJson = line;
                     }
+
+                    /*String line2;
+
+                    while ((line2 = sd.readLine()) != null) {
+                        System.out.println(line2);
+                    }*/
+
                     // PARSA FÖLJANDE INPUT: {"id":"u1d80044b7d60dcc0aa2f3dfcac7cfc96","secret":"3EF1A94C6A16733E1AAF6589DA3B3DE3"}
                     // OCH SPARA TILL apiUsername och apiPassword
+                    JsonObject serverResponse = (JsonObject) jsonParser.parse(receivedJson);
+                    sessionManagemer.createLoginSession(serverResponse.get("id").getAsString(), serverResponse.get("secret").getAsString());
+
+
 
                     //kolla om error 200 (dvs att allt gick bra) och ingen ingen timeout, annars försök igen lr säg till användare natt det inte gick
                     rd.close();
+                    //sd.close();
                 } catch(NullPointerException n){
-                    System.out.println("No errors received from server");
+                    n.printStackTrace();
+                    System.out.println("Incorrect user details");
+                    return false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
             return true;
         }
 
@@ -420,10 +442,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                Intent intent = new Intent(context, TabLayoutActivity.class);
+                startActivity(intent);
+                //finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+
+                findViewById(R.id.text_invalid_user_credentials).setVisibility(View.VISIBLE);
+                mLoginFormView.requestFocus();
             }
         }
 
