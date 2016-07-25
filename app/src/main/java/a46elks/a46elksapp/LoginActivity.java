@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -35,6 +36,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -76,10 +79,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
-    private View mLrogressView;
     private View mLoginFormView;
-    private String apiUsername, apiPassword;
     private SessionManager sessionManagemer;
+    private TextView errorMessage;
+    private String errorInvalid, errorFailed, error;
 
     // USE ALERTDIALOG TO DISPLAY POP-UP
 
@@ -89,6 +92,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sessionManagemer = new SessionManager(context);
+        errorMessage = (TextView) findViewById(R.id.text_error_message);
+        errorInvalid = getResources().getString(R.string.error_invalid_user_credentials);
+        errorFailed = getResources().getString(R.string.error_connection_failed);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.prompt_email);
         populateAutoComplete();
@@ -137,14 +143,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (findViewById(R.id.text_invalid_user_credentials).getVisibility() == View.VISIBLE) {
-                    findViewById(R.id.text_invalid_user_credentials).setVisibility(View.INVISIBLE);
-                }
-            }
-        });
 
     }
 
@@ -210,6 +208,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Reset errors.
+        if (errorMessage.getVisibility()==View.VISIBLE){
+            errorMessage.setVisibility(View.INVISIBLE);
+        }
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
@@ -367,17 +368,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
         private JsonParser jsonParser;
+        private JsonObject serverResponse;
+        private InputStream inputStream;
+        private HttpURLConnection conn;
 
 
         UserLoginTask(String email, String password) {
             mEmail = email.toLowerCase();
             mPassword = password;
             jsonParser = new JsonParser();
+
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            // TODO: PUT ALL ASYNC TASKS INTO ONE CLASS
 
             String line = null;
 
@@ -388,52 +393,56 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 // Make HTTP POST request
                 URL url = new URL("https://dashboard.46elks.com/api/login.php");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn = (HttpURLConnection) url.openConnection();
 
                 conn.setDoOutput(true);
+                conn.setDoInput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write(data);
                 wr.flush();
                 wr.close();
 
-                try {
+                //kolla om error 200 (dvs att allt gick bra) och ingen ingen timeout, annars försök igen lr säg till användare natt det inte gick
+                if (!(conn.getResponseCode() >= 400)) {
 
-                   // BufferedReader sd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    inputStream = conn.getInputStream();
+                    BufferedReader sd = new BufferedReader(new InputStreamReader(inputStream));
 
                     String receivedJson = null;
-                    while ((line = rd.readLine()) != null) {
+                    while ((line = sd.readLine()) != null) {
                         System.out.println(line);
                         receivedJson = line;
                     }
 
-                    /*String line2;
+                    if (TextUtils.equals(receivedJson, "username or password incorrect")){
+                        System.out.println("Incorrect user details");
+                        error = errorInvalid;
+                        sd.close();
+                        return false;
 
-                    while ((line2 = sd.readLine()) != null) {
-                        System.out.println(line2);
-                    }*/
+                    } else{
+                    serverResponse = (JsonObject) jsonParser.parse(receivedJson);
+                        sd.close();
+                        return true;
+                    }
 
-                    // PARSA FÖLJANDE INPUT: {"id":"u1d80044b7d60dcc0aa2f3dfcac7cfc96","secret":"3EF1A94C6A16733E1AAF6589DA3B3DE3"}
-                    // OCH SPARA TILL apiUsername och apiPassword
-                    JsonObject serverResponse = (JsonObject) jsonParser.parse(receivedJson);
-                    sessionManagemer.createLoginSession(serverResponse.get("id").getAsString(), serverResponse.get("secret").getAsString());
+                } else {
+                   // inputStream = conn.getErrorStream();
 
+                // If no connection was made
 
-
-                    //kolla om error 200 (dvs att allt gick bra) och ingen ingen timeout, annars försök igen lr säg till användare natt det inte gick
-                    rd.close();
-                    //sd.close();
-                } catch(NullPointerException n){
-                    n.printStackTrace();
-                    System.out.println("Incorrect user details");
+                    error = errorFailed;
                     return false;
                 }
+
+
             } catch (Exception e) {
+                error = errorFailed;
                 e.printStackTrace();
+                System.out.println("Connection to server failed");
                 return false;
             }
 
-            return true;
         }
 
         @Override
@@ -442,12 +451,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+                sessionManagemer.createLoginSession(serverResponse.get("id").getAsString(), serverResponse.get("secret").getAsString());
                 Intent intent = new Intent(context, TabLayoutActivity.class);
                 startActivity(intent);
                 //finish();
             } else {
-
-                findViewById(R.id.text_invalid_user_credentials).setVisibility(View.VISIBLE);
+                errorMessage.setText(error);
+                errorMessage.setVisibility(View.VISIBLE);
                 mLoginFormView.requestFocus();
             }
         }

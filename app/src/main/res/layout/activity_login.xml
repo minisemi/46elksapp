@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/error_invalid_user_credentials"
-                android:id="@+id/text_invalid_user_credentials"
+                android:id="@+id/text_error_message"
                 android:layout_gravity="center"
                 android:textColor="@android:color/holo_red_light"
                 android:visibility="invisible"/>
