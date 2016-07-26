@@ -17,24 +17,21 @@ public class EditMessageActivity extends AppCompatActivity {
         findViewById(R.id.action_edit_message).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditMessageActivity.this, TabLayoutActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
         findViewById(R.id.action_edit_message_go_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditMessageActivity.this, TabLayoutActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
         findViewById(R.id.action_delete_message).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditMessageActivity.this, TabLayoutActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 

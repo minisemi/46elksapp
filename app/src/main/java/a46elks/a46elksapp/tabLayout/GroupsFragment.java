@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.SessionManager;
 
 /**
  * Created by Alexander on 2016-06-29.
@@ -17,6 +18,7 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public Context context = getActivity();
+    private SessionManager sessionManager;
 
     private int mPage;
 
@@ -31,6 +33,7 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(getActivity().getApplicationContext());
        // mPage = getArguments().getInt(ARG_PAGE);
 
     }

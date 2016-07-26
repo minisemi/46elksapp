@@ -23,6 +23,7 @@ import a46elks.a46elksapp.tabLayout.SendMessageFragment;
  * Created by Alexander on 2016-07-07.
  */
 public class HttpAsyncTask extends AsyncTask{
+    // TODO: Implement "Service" so that SMS are sent in background if application is closed
 
     private JsonParser parser = new JsonParser();
     private JsonObject object;

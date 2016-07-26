@@ -43,7 +43,7 @@ public class SettingsFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionManager = new SessionManager(getContext());
+        sessionManager = new SessionManager(getActivity().getApplicationContext());
 
       //  mPage = getArguments().getInt(ARG_PAGE);
     }

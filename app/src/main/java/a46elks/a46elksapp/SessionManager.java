@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by Alexander on 2016-07-22.
@@ -23,34 +24,42 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     // Sharedpref file name
-    private static final String PREF_NAME = "a46elksapp_sharedpref";
+    //private static String PREF_NAME;
 
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
 
     // User name (make variable public to access from outside)
-    public static final String KEY_API_USERNAME = "id";
+    private static final String KEY_API_USERNAME = "id";
 
     // Email address (make variable public to access from outside)
-    public static final String KEY_API_PASSWORD = "secret";
+    private static final String KEY_API_PASSWORD = "secret";
+
+    // Groups
+    private HashSet groups;
+
 
     // Constructor
     public SessionManager(Context context){
         this.context = context;
-        pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        editor = pref.edit();
+        groups = new HashSet();
     }
 
-    public void createLoginSession (String name, String email){
+    public void createLoginSession (String apiUsername, String apiPassword){
+        final String PREF_NAME = apiUsername;
+
+        pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        editor = pref.edit();
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
         // Storing name in pref
-        editor.putString(KEY_API_USERNAME, name);
+        editor.putString("id", apiUsername);
 
         // Storing email in pref
-        editor.putString(KEY_API_PASSWORD, email);
+        editor.putString("secret", apiPassword);
 
+        editor.putStringSet("groups", groups);
         // commit changes
         editor.commit();
     }
@@ -58,13 +67,22 @@ public class SessionManager {
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
-        user.put(KEY_API_USERNAME, pref.getString(KEY_API_USERNAME, null));
+        user.put("id", pref.getString("id", null));
 
         // user email id
-        user.put(KEY_API_PASSWORD, pref.getString(KEY_API_PASSWORD, null));
+        user.put("secret", pref.getString("secret", null));
 
         // return user
         return user;
+    }
+
+    public void createGroup (){
+        groups.add("Hej");
+
+    }
+
+    public void updateGroup (){
+
     }
 
     public void checkLogin(){
@@ -108,7 +126,7 @@ public class SessionManager {
         // Add new Flag to start new Activity
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        // Staring Login Activity
+        // Starting Login Activity
         context.startActivity(i);
     }
 }

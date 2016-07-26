@@ -44,6 +44,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import a46elks.a46elksapp.introductionGuide.AccountCreationActivity;
@@ -91,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sessionManagemer = new SessionManager(context);
+        sessionManagemer = new SessionManager(getApplicationContext());
         errorMessage = (TextView) findViewById(R.id.text_error_message);
         errorInvalid = getResources().getString(R.string.error_invalid_user_credentials);
         errorFailed = getResources().getString(R.string.error_connection_failed);

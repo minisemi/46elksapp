@@ -53,7 +53,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_layout);
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(getApplicationContext());
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         viewPager = (ViewPager) findViewById(R.id.viewpager);

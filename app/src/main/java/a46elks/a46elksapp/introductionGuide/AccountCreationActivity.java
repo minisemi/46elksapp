@@ -59,7 +59,7 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
     private AutoCompleteTextView editEmail;
     private static final int REQUEST_READ_CONTACTS = 0;
     private AccountCreationActivity accountCreationActivity = this;
-    private String errorInvalid, errorFailed, error;
+    private String errorFailed, error;
     private TextView errorMessage;
 
 
@@ -69,12 +69,15 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_creation);
         editName = (EditText) findViewById(R.id.editText_name_or_company);
+        editName.setText("Alexander");
         editMobilenumber = (EditText) findViewById(R.id.editText_mobile_number);
+        editMobilenumber.setText("+46707142760");
         editEmail = (AutoCompleteTextView) findViewById(R.id.editText_email);
+        editEmail.setText("alexander+0002@46elks.com");
         editPassword = (EditText) findViewById(R.id.editText_password);
+        editPassword.setText("admin");
         sessionManager = new SessionManager(context);
         errorMessage = (TextView) findViewById(R.id.text_error_message);
-        errorInvalid = getResources().getString(R.string.error_invalid_user_credentials);
         errorFailed = getResources().getString(R.string.error_connection_failed);
         accountCreationForm = findViewById(R.id.account_creation_form);
         progressView = findViewById(R.id.login_progress);
@@ -103,7 +106,8 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
             public void onClick(View v) {
                 mAuthTask = null;
                 showProgress(false);
-                accountCreationActivity.moveTaskToBack(true);
+                finish();
+
             }
         });
 
@@ -322,7 +326,7 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
     public void onBackPressed() {
         mAuthTask = null;
         showProgress(false);
-        this.moveTaskToBack(false);
+        super.onBackPressed();
     }
 
 
@@ -335,6 +339,8 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
         private final String email, name, password, mobileNumber, currency;
         private JsonParser jsonParser;
         private JsonObject serverResponse;
+        private EditText editText = null;
+        private AutoCompleteTextView autoCompleteTextView;
 
 
         AccountCreationTask(String name, String mobileNumber, String email, String password) {
@@ -351,6 +357,7 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
 
             String line = null;
 
+
             try {
                 // Construct POST data
                 String data = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8");
@@ -359,11 +366,14 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
                 data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                 // TODO: CREATE CURRENCY AND PHONECOUNTRY OPTION FOR SIGNUP
                 data += "&" + URLEncoder.encode("currency", "UTF-8") + "=" + URLEncoder.encode(currency, "UTF-8");
+                System.out.println("data: "+data+"}");
+                System.out.println("mejl: "+email);
+                System.out.println("pw: "+password+"}");
 
                 // Make HTTP POST request
                 URL url = new URL("https://www.46elks.com/api/signup");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
+                conn.setDoInput(true);
                 conn.setDoOutput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write(data);
@@ -385,39 +395,40 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
                     if (TextUtils.equals(receivedJson, "{\"success\":\"Account created\"}")){
                         String newData = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
                         newData += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                        System.out.println("newData: "+newData+"}");
+                        System.out.println("email: "+email);
+                        System.out.println("password: "+password+"}");
 
-                        url = new URL("https://dashboard.46elks.com/api/login.php");
-                        conn = (HttpURLConnection) url.openConnection();
-                        conn.setDoOutput(true);
-                        conn.setDoInput(true);
-                        wr = new OutputStreamWriter(conn.getOutputStream());
-                        wr.write(newData);
-                        wr.flush();
-                        wr.close();
+                        URL newUrl = new URL("https://dashboard.46elks.com/api/login.php");
+                        HttpURLConnection newConn = (HttpURLConnection) newUrl.openConnection();
+                        newConn.setDoOutput(true);
+                        newConn.setDoInput(true);
+                        OutputStreamWriter newWr = new OutputStreamWriter(newConn.getOutputStream());
+                        newWr.write(newData);
+                        newWr.flush();
+                        newWr.close();
 
-                        if (!(conn.getResponseCode() >= 400)) {
+                        if (!(newConn.getResponseCode() >= 400)) {
 
-                            sd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                            BufferedReader newSd = new BufferedReader(new InputStreamReader(newConn.getInputStream()));
 
                             String newReceivedJson = null;
                             String newLine;
-                            while ((newLine = sd.readLine()) != null) {
+                            while ((newLine = newSd.readLine()) != null) {
                                 System.out.println(newLine);
                                 newReceivedJson = newLine;
                             }
 
                             if (TextUtils.equals(newReceivedJson, "username or password incorrect")){
-                                System.out.println("Incorrect user details");
-                                sd.close();
+                                newSd.close();
                                 mAuthTask = null;
                                 showProgress(false);
-                                Intent intent = new Intent(context, LoginActivity.class);
-                                startActivity(intent);
+                                finish();
                                 return false;
 
                             } else{
                                 serverResponse = (JsonObject) jsonParser.parse(newReceivedJson);
-                                sd.close();
+                                newSd.close();
                                 return true;
                             }
 
@@ -428,20 +439,55 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
                             // If no connection was made
                             mAuthTask = null;
                             showProgress(false);
-                            Intent intent = new Intent(context, LoginActivity.class);
-                            startActivity(intent);
+                            finish();
                             return false;
                         }
 
                     } else{
                         serverResponse = (JsonObject) jsonParser.parse(receivedJson);
-                        error = serverResponse.get("Error").toString();
+                        error = serverResponse.get("error").toString();
 
                         switch (error){
 
+                            case "\"Currency is not SEK or EUR\"":
+                                break;
+                            case "\"Missing parameter.\"":
+                                break;
+                            case "\"The phone number is not valid.\"":
+                                editText = editMobilenumber;
+                                break;
+                            case "\"Email address is not valid.\"":
+                                autoCompleteTextView = editEmail;
+                                break;
+                            case "\"Temporary email address is not allowed.\"":
+                                autoCompleteTextView = editEmail;
+                                break;
+                            case "\"Unable to access the mailserver for that email.\"":
+                                autoCompleteTextView = editEmail;
+                                break;
+                            case "\"Phone number already registered.\"":
+                                editText = editMobilenumber;
+                                break;
+                            case "\"Email already registered.\"":
+                                autoCompleteTextView = editEmail;
+                                break;
+                            case "\"Mobile number does not belong to any country.\"":
+                                editText = editMobilenumber;
+                                break;
+                            case "\"Mobile number not valid.\"":
+                                editText = editMobilenumber;
+                                break;
+                            case "\"Mobile number does not seem valid, you may still try but it might not work.\"":
+                                editText = editMobilenumber;
+                                break;
+                            case "\"API user creation failed, unknown error.\"":
+                                break;
+                            case "\"Verification phone call failed.\"":
+                                break;
+
                         }
 
-                        System.out.println("Error detected:");
+                        System.out.println("Error detected:" + error);
                         return false;
                     }
 
@@ -453,8 +499,6 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
                     error = errorFailed;
                     return false;
                 }
-
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -476,9 +520,20 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
                 startActivity(intent);
                 //finish();
             } else {
-                errorMessage.setText(error);
-                errorMessage.setVisibility(View.VISIBLE);
-                accountCreationForm.requestFocus();
+
+                if (!(editText == null)) {
+                    editText.setError(error);
+                    editText.requestFocus();
+
+                } else if (!(autoCompleteTextView == null)){
+                    autoCompleteTextView.setError(error);
+                    autoCompleteTextView.requestFocus();
+
+                } else {
+                    errorMessage.setText(error);
+                    errorMessage.setVisibility(View.VISIBLE);
+                    accountCreationForm.requestFocus();
+                }
             }
         }
 
