@@ -75,12 +75,24 @@
     \n
     \nSender</string>
 
-    <!-- Strings related to ContactsActivity -->
+    <!-- Strings related to ContactsFragment -->
     <string name="text_contacts">Contacts</string>
     <string name="text_add_contact">Add contact</string>
 
+    <!-- Strings related to AddContactActivity -->
+    <string name="text_create_contact">Add new contact</string>
+    <string name="prompt_contact_first_name">First name</string>
+    <string name="prompt_contact_last_name">Last name</string>
+    <string name="prompt_contact_number">Mobile number</string>
+    <string name="action_create_contact">Done</string>
 
-    <!-- Strings related to HistoryActivity -->
+    <!-- Strings related to EditContactActivity -->
+    <string name="text_edit_contact">Edit Contact</string>
+    <string name="action_edit_contact">Edit</string>
+    <string name="action_delete_contact">Delete</string>
+
+
+    <!-- Strings related to HistoryFragment -->
     <string name="text_history">History</string>
 
     <!-- Strings related to SettingsFragment -->

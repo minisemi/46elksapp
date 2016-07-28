@@ -38,10 +38,12 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".tabLayout.EditMessageActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".LoginActivity2"
-            android:label="@string/title_activity_login2"></activity>
+            android:label="@string/title_activity_login2" />
+        <activity android:name=".tabLayout.AddContactActivity" />
+        <activity android:name=".tabLayout.EditContactActivity"></activity>
     </application>
 
 </manifest>

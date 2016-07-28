@@ -1,5 +1,6 @@
 package a46elks.a46elksapp.tabLayout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
