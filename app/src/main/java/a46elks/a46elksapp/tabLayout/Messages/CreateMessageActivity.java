@@ -1,4 +1,4 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.tabLayout.Messages;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

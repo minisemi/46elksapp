@@ -34,16 +34,18 @@
             android:name=".introductionGuide.IntroTabLayoutActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".tabLayout.CreateMessageActivity"
+            android:name=".tabLayout.Messages.CreateMessageActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".tabLayout.EditMessageActivity"
+            android:name=".tabLayout.Messages.EditMessageActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".LoginActivity2"
             android:label="@string/title_activity_login2" />
-        <activity android:name=".tabLayout.AddContactActivity" />
-        <activity android:name=".tabLayout.EditContactActivity"></activity>
+        <activity android:name=".tabLayout.Contacts.CreateContactActivity" />
+        <activity android:name=".tabLayout.Contacts.EditContactActivity" />
+        <activity android:name=".tabLayout.Groups.CreateGroupActivity" />
+        <activity android:name=".tabLayout.Groups.EditGroupActivity"></activity>
     </application>
 
 </manifest>

@@ -1,22 +1,19 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.tabLayout.History;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.tabLayout.Adapters.CustomListViewAdapter;
 
 /**
  * Created by Alexander on 2016-06-29.

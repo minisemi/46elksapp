@@ -9,18 +9,26 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.widget.LinearLayout;
 
 import java.util.HashMap;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
 import a46elks.a46elksapp.SessionManager;
+import a46elks.a46elksapp.introductionGuide.NonScrollableViewPager;
 import a46elks.a46elksapp.serverConnection.HttpAsyncTask;
+import a46elks.a46elksapp.tabLayout.Adapters.SampleFragmentPagerAdapter;
+import a46elks.a46elksapp.tabLayout.Contacts.Contact;
+import a46elks.a46elksapp.tabLayout.Contacts.ContactsFragment;
+import a46elks.a46elksapp.tabLayout.History.HistoryFragment;
+import a46elks.a46elksapp.tabLayout.Messages.SendMessageFragment;
 
 public class TabLayoutActivity extends AppCompatActivity implements FragmentCommunicator {
 
-    private ViewPager viewPager;
+    private ScrollableViewPager viewPager;
     private TabLayout tabLayout;
+    private static String PREF_NAME;
     public static String POSITION = "POSITION";
     final int PAGE_COUNT = 5;
     private int[] tabIcons = {
@@ -46,19 +54,24 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             HISTORY_POSITION = 3,
             USER_PAGE_POSITION = 4;
     private HistoryFragment historyFragment;
+    private ContactsFragment contactsFragment;
     private int eventID = 0;
     private SessionManager sessionManager;
+    private SendMessageFragment sendMessageFragment;
+    private Boolean scrollable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_layout);
         sessionManager = new SessionManager(getApplicationContext());
+        scrollable = true;
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ScrollableViewPager) findViewById(R.id.viewpager);
         sampleFragmentPagerAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sampleFragmentPagerAdapter);
+        //android.support.v4.view.ViewPager
 
         viewPager.setOffscreenPageLimit(4);
 
@@ -81,6 +94,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
                 tab.setText(getPageTitle(tab.getPosition()));
                 fadeLastSelectedTab();
                 lastSelectedTab = tab;
+
             }
 
             @Override
@@ -91,6 +105,8 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
         });
 
         historyFragment = (HistoryFragment) sampleFragmentPagerAdapter.getItem(HISTORY_POSITION);
+        contactsFragment = (ContactsFragment) sampleFragmentPagerAdapter.getItem(CONTACTS_POSITION);
+        sendMessageFragment = (SendMessageFragment) sampleFragmentPagerAdapter.getItem(SEND_MESSAGE_POSITION);
 
     }
 
@@ -157,7 +173,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
 
                 for (Contact receiver : children) {
 
-                    final String receiverNumber = receiver.getNumber();
+                    final String receiverNumber = receiver.getMobileNumber();
                     HttpAsyncTask smsAsyncTask = new HttpAsyncTask(eventID, apiUsername, apiPassword,
                             historyFragment, message, senderName, numberOfSMS);
                     smsAsyncTask.execute(receiverNumber);
@@ -167,6 +183,34 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             // Vill ha serverns tid (CET?) som id
             eventID++;
 
+    }
+
+    public void chooseContacts (List<Contact> contactList) {
+        viewPager.setCurrentItem(0, true);
+        viewPager.setScrollable(false);
+        LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+        tabStrip.setEnabled(false);
+        for(int i = 0; i < tabStrip.getChildCount(); i++) {
+            tabStrip.getChildAt(i).setClickable(false);
+        }
+        contactsFragment.chooseContacts(contactList);
+        //contactsFragment
+    }
+
+    public void finishChooseContacts (List<Contact> contactList) {
+        viewPager.setCurrentItem(2, true);
+        viewPager.setScrollable(true);
+        LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+        tabStrip.setEnabled(true);
+        for(int i = 0; i < tabStrip.getChildCount(); i++) {
+            tabStrip.getChildAt(i).setClickable(true);
+        }
+        sendMessageFragment.populateContacts(contactList);
+
+    }
+
+    public SessionManager getSessionManager (){
+        return sessionManager;
     }
 
     @Override

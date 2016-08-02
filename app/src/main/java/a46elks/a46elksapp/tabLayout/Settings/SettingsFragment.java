@@ -1,22 +1,18 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.tabLayout.Settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.PermissionRequest;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.widget.TextView;
 
 import a46elks.a46elksapp.LoginActivity;
 import a46elks.a46elksapp.R;
 import a46elks.a46elksapp.SessionManager;
-import a46elks.a46elksapp.introductionGuide.CreateMessageFragment;
+import a46elks.a46elksapp.tabLayout.FragmentCommunicator;
 
 /**
  * Created by Alexander on 2016-06-29.
@@ -27,6 +23,7 @@ public class SettingsFragment extends Fragment{
 
     private int mPage;
     private SessionManager sessionManager;
+    private FragmentCommunicator fragmentCommunicator;
 
     public static SettingsFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -43,9 +40,14 @@ public class SettingsFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionManager = new SessionManager(getActivity().getApplicationContext());
 
       //  mPage = getArguments().getInt(ARG_PAGE);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        sessionManager = fragmentCommunicator.getSessionManager();
     }
 
     @Override
@@ -85,5 +87,19 @@ public class SettingsFragment extends Fragment{
         wv.getSettings().setAllowUniversalAccessFromFileURLs(true);
         wv.getSettings().setDomStorageEnabled(true);
         wv.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);*/
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            fragmentCommunicator = (FragmentCommunicator) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnEventStartedListener");
+        }
     }
 }

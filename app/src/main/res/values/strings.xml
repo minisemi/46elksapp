@@ -77,19 +77,27 @@
 
     <!-- Strings related to ContactsFragment -->
     <string name="text_contacts">Contacts</string>
-    <string name="text_add_contact">Add contact</string>
+    <string name="action_add_contact">Add contact</string>
+    <string name="text_choose_contacts">Choose contacts</string>
+    <string name="action_choose_contacts">Done</string>
 
-    <!-- Strings related to AddContactActivity -->
+    <!-- Strings related to CreateContactActivity -->
     <string name="text_create_contact">Add new contact</string>
     <string name="prompt_contact_first_name">First name</string>
     <string name="prompt_contact_last_name">Last name</string>
     <string name="prompt_contact_number">Mobile number</string>
     <string name="action_create_contact">Done</string>
+    <string name="error_invalid_number">Number must be 10 digits long</string>
+
 
     <!-- Strings related to EditContactActivity -->
     <string name="text_edit_contact">Edit Contact</string>
     <string name="action_edit_contact">Edit</string>
     <string name="action_delete_contact">Delete</string>
+
+    <!-- Strings related to GroupsFragment -->
+    <string name="text_groups">Groups</string>
+    <string name="action_add_group">Add group</string>
 
 
     <!-- Strings related to HistoryFragment -->

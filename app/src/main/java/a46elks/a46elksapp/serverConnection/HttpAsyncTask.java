@@ -1,6 +1,5 @@
 package a46elks.a46elksapp.serverConnection;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.gson.JsonArray;
@@ -15,9 +14,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
-import a46elks.a46elksapp.SessionManager;
-import a46elks.a46elksapp.tabLayout.HistoryFragment;
-import a46elks.a46elksapp.tabLayout.SendMessageFragment;
+import a46elks.a46elksapp.tabLayout.History.HistoryFragment;
+import a46elks.a46elksapp.tabLayout.Messages.SendMessageFragment;
 
 /**
  * Created by Alexander on 2016-07-07.
@@ -48,6 +46,11 @@ public class HttpAsyncTask extends AsyncTask{
     protected Object doInBackground(Object[] params) {
 
         String receiverNumber = params[0].toString();
+        if (!receiverNumber.startsWith("+")){
+            // TODO: IMPLEMENT MORE COUNTRY CODES
+            String lastDigits = receiverNumber.substring(1);
+            receiverNumber = "+46" + lastDigits;
+        }
         String line = null;
 
             try {

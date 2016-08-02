@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -36,7 +35,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -44,7 +42,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import a46elks.a46elksapp.introductionGuide.AccountCreationActivity;
@@ -81,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private SessionManager sessionManagemer;
+    private SessionManager sessionManager;
     private TextView errorMessage;
     private String errorInvalid, errorFailed, error;
 
@@ -92,7 +89,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sessionManagemer = new SessionManager(getApplicationContext());
         errorMessage = (TextView) findViewById(R.id.text_error_message);
         errorInvalid = getResources().getString(R.string.error_invalid_user_credentials);
         errorFailed = getResources().getString(R.string.error_connection_failed);
@@ -247,7 +243,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+            //showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
@@ -319,7 +315,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onBackPressed() {
         mAuthTask = null;
-        showProgress(false);
+        //showProgress(false);
         this.moveTaskToBack(true);
     }
 
@@ -449,10 +445,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            //showProgress(false);
 
             if (success) {
-                sessionManagemer.createLoginSession(serverResponse.get("id").getAsString(), serverResponse.get("secret").getAsString());
+                sessionManager = new SessionManager(getApplicationContext());
+                sessionManager.createLoginSession(serverResponse.get("secret").getAsString(), serverResponse.get("id").getAsString());
                 Intent intent = new Intent(context, TabLayoutActivity.class);
                 startActivity(intent);
                 //finish();
@@ -466,7 +463,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            showProgress(false);
+            //showProgress(false);
         }
     }
 }

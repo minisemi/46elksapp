@@ -1,4 +1,4 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.tabLayout.Adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.tabLayout.Contacts.Contact;
 
 /**
  * Created by Alexander on 2016-07-05.
@@ -46,7 +47,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final Contact child = (Contact) getChild(groupPosition, childPosition);
 
-        final String childText = child.getReceiverName()+": "+child.getNumber();
+        final String childText = child.getFirstName()+": "+child.getMobileNumber();
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -55,7 +56,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.text_contact_description);
+                .findViewById(R.id.text_contact_first_name);
 
         txtListChild.setText(childText);
         return convertView;

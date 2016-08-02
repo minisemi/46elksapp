@@ -1,4 +1,4 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.tabLayout.Adapters;
 
 /**
  * Created by Alexander on 2016-07-05.
@@ -11,17 +11,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.util.List;
 
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.tabLayout.Contacts.Contact;
+import a46elks.a46elksapp.tabLayout.History.HistoryListItem;
 
 public class CustomListViewAdapter extends ArrayAdapter {
     private final Context context;
     private List<HistoryListItem> valuesHistory;
-    private List<String> valuesContacts;
+    private List<Contact> valuesContacts;
     private final String LISTVIEWADAPTER_ACTION;
     private JsonParser jsonParser;
 
@@ -32,12 +33,12 @@ public class CustomListViewAdapter extends ArrayAdapter {
         this.context = context;
         switch (LISTVIEWADAPTER_ACTION) {
             case "CONTACTS":
-                this.valuesHistory = values;
+                this.valuesContacts = values;
+                jsonParser = new JsonParser();
                 break;
 
             case "HISTORY":
-                this.valuesContacts = values;
-                jsonParser = new JsonParser();
+                this.valuesHistory = values;
                 break;
         }
         this.LISTVIEWADAPTER_ACTION = LISTVIEWADAPTER_ACTION;
@@ -63,12 +64,16 @@ public class CustomListViewAdapter extends ArrayAdapter {
                 TextView firstName = (TextView) rowView.findViewById(R.id.text_contact_first_name);
                 TextView lastName = (TextView) rowView.findViewById(R.id.text_contact_last_name);
                 TextView mobileNumber = (TextView) rowView.findViewById(R.id.text_contact_mobile_number);
-                TextView containingGroups = (TextView) rowView.findViewById(R.id.text_containing_groups);
-                JsonObject contact = (JsonObject) jsonParser.parse(valuesContacts.get(position));
+                firstName.setText(valuesContacts.get(position).getFirstName());
+                lastName.setText(valuesContacts.get(position).getLastName());
+                mobileNumber.setText(valuesContacts.get(position).getMobileNumber());
+                //contactID.setText(Integer.toString(valuesContacts.get(position).getContactID()));
+                //containingGroups.setText(valuesContacts.get(position).getContainingGroups());
+                /*JsonObject contact = (JsonObject) jsonParser.parse(valuesContacts.get(position));
                 firstName.setText(contact.get("CONTACT_FIRST_NAME").toString());
                 lastName.setText(contact.get("CONTACT_LAST_NAME").toString());
                 mobileNumber.setText(contact.get("CONTACT_MOBILE_NUMBER").toString());
-                containingGroups.setText(contact.get("CONTACT_CONTAINING_GROUPS").toString());
+                containingGroups.setText(contact.get("CONTACT_CONTAINING_GROUPS").toString());*/
 
                 //textView.setText(valuesHistory.get(position));
                 return rowView;

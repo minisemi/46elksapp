@@ -1,4 +1,4 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.tabLayout.History;
 
 import android.app.Activity;
 import android.widget.ProgressBar;

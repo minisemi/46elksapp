@@ -1,15 +1,13 @@
-package a46elks.a46elksapp.tabLayout;
+package a46elks.a46elksapp.tabLayout.Adapters;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 
-import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.tabLayout.Contacts.ContactsFragment;
+import a46elks.a46elksapp.tabLayout.Groups.GroupsFragment;
+import a46elks.a46elksapp.tabLayout.History.HistoryFragment;
+import a46elks.a46elksapp.tabLayout.Messages.SendMessageFragment;
+import a46elks.a46elksapp.tabLayout.Settings.SettingsFragment;
 
 /**
  * Created by Alexander on 2016-06-29.

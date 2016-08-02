@@ -76,7 +76,6 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
         editEmail.setText("alexander+0002@46elks.com");
         editPassword = (EditText) findViewById(R.id.editText_password);
         editPassword.setText("admin");
-        sessionManager = new SessionManager(context);
         errorMessage = (TextView) findViewById(R.id.text_error_message);
         errorFailed = getResources().getString(R.string.error_connection_failed);
         accountCreationForm = findViewById(R.id.account_creation_form);
@@ -515,7 +514,8 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
             showProgress(false);
 
             if (success) {
-                sessionManager.createLoginSession(serverResponse.get("id").getAsString(), serverResponse.get("secret").getAsString());
+                sessionManager = new SessionManager(getApplicationContext());
+                sessionManager.createLoginSession(serverResponse.get("secret").getAsString(), serverResponse.get("id").getAsString());
                 Intent intent = new Intent(context, IntroTabLayoutActivity.class);
                 startActivity(intent);
                 //finish();

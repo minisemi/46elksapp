@@ -14,12 +14,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import a46elks.a46elksapp.R;
+import a46elks.a46elksapp.SessionManager;
 
 public class IntroTabLayoutActivity extends AppCompatActivity {
 
     public static ViewPager viewPager;
     public static String POSITION = "POSITION";
     final int PAGE_COUNT = 3;
+    private SessionManager sessionManager;
 
     private TabLayout.Tab lastSelectedTab;
 
@@ -27,6 +29,8 @@ public class IntroTabLayoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_tab_layout);
+        // TODO: IMPLEMENT INTERFACE TO PASS ON PREF_NAME
+        sessionManager = new SessionManager(getApplicationContext());
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         viewPager = (ViewPager) findViewById(R.id.viewpager_intro);
