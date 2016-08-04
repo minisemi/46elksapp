@@ -11,6 +11,7 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import a46elks.a46elksapp.serverConnection.HttpAsyncTask;
 import a46elks.a46elksapp.tabLayout.Adapters.SampleFragmentPagerAdapter;
 import a46elks.a46elksapp.tabLayout.Contacts.Contact;
 import a46elks.a46elksapp.tabLayout.Contacts.ContactsFragment;
+import a46elks.a46elksapp.tabLayout.Groups.Group;
 import a46elks.a46elksapp.tabLayout.History.HistoryFragment;
 import a46elks.a46elksapp.tabLayout.Messages.SendMessageFragment;
 
@@ -128,13 +130,13 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
         return sb;
     }
 
-    public void onSmsSent(String message, String senderName, HashMap<String, List<Contact>> listDataChild) {
+    public void onSmsSent(String message, String senderName, HashMap<String, ArrayList<Contact>> listDataChild) {
         // The user selected the headline of an article from the HeadlinesFragment
         // Do something here to display that article
 
         int numberOfSMS = 0;
 
-        for (List<Contact> children : listDataChild.values()){
+        for (ArrayList<Contact> children : listDataChild.values()){
             numberOfSMS = numberOfSMS + children.size();
         }
 
@@ -169,7 +171,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             //int connectionID = 0;
             //historyFragment.setProgressMax(eventID, listDataChild.size());
 
-            for (List<Contact> children : listDataChild.values()) {
+            for (ArrayList<Contact> children : listDataChild.values()) {
 
                 for (Contact receiver : children) {
 
@@ -185,7 +187,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
 
     }
 
-    public void chooseContacts (List<Contact> contactList) {
+    public void chooseContacts (ArrayList<Contact> contactList) {
         viewPager.setCurrentItem(0, true);
         viewPager.setScrollable(false);
         LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
@@ -197,7 +199,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
         //contactsFragment
     }
 
-    public void finishChooseContacts (List<Contact> contactList) {
+    public void finishChooseContacts (ArrayList<Contact> contactList) {
         viewPager.setCurrentItem(2, true);
         viewPager.setScrollable(true);
         LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
@@ -206,6 +208,30 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             tabStrip.getChildAt(i).setClickable(true);
         }
         sendMessageFragment.populateContacts(contactList);
+
+    }
+
+    public void chooseGroups (ArrayList<Group> groupList) {
+        viewPager.setCurrentItem(1, true);
+        viewPager.setScrollable(false);
+        LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+        tabStrip.setEnabled(false);
+        for(int i = 0; i < tabStrip.getChildCount(); i++) {
+            tabStrip.getChildAt(i).setClickable(false);
+        }
+        contactsFragment.chooseContacts(groupList);
+        //contactsFragment
+    }
+
+    public void finishChooseGroups (ArrayList<Group> groupList) {
+        viewPager.setCurrentItem(2, true);
+        viewPager.setScrollable(true);
+        LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
+        tabStrip.setEnabled(true);
+        for(int i = 0; i < tabStrip.getChildCount(); i++) {
+            tabStrip.getChildAt(i).setClickable(true);
+        }
+        sendMessageFragment.populateContacts(groupList);
 
     }
 

@@ -98,7 +98,16 @@
     <!-- Strings related to GroupsFragment -->
     <string name="text_groups">Groups</string>
     <string name="action_add_group">Add group</string>
+    <string name="text_choose_groups">Choose groups</string>
+    <string name="action_choose_groups">Done</string>
 
+    <!-- Strings related to AddGroupActivity -->
+    <string name="text_add_group">Create Group</string>
+
+    <!-- Strings related to EditGroupActivity -->
+    <string name="text_edit_group">Edit Group</string>
+    <string name="action_edit_group">Edit</string>
+    <string name="action_delete_group">Delete</string>
 
     <!-- Strings related to HistoryFragment -->
     <string name="text_history">History</string>

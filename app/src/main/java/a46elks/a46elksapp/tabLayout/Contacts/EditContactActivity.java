@@ -17,7 +17,6 @@ public class EditContactActivity extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
     private EditText mobileNumber;
-    private JsonObject jsonObject;
     private Bundle extras;
 
     @Override
@@ -25,12 +24,7 @@ public class EditContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_contact);
 
-        jsonObject = new JsonObject();
         extras = getIntent().getExtras();
-        jsonObject.addProperty("CONTACT_FIRST_NAME", extras.getString("CONTACT_FIRST_NAME"));
-        jsonObject.addProperty("CONTACT_LAST_NAME", extras.getString("CONTACT_LAST_NAME"));
-        jsonObject.addProperty("CONTACT_MOBILE_NUMBER", extras.getString("CONTACT_MOBILE_NUMBER"));
-        jsonObject.addProperty("CONTACT_CONTAINING_GROUPS", extras.getString("CONTACT_CONTAINING_GROUPS"));
         firstName = (EditText) findViewById(R.id.editText_edit_contact_first_name);
         lastName = (EditText) findViewById(R.id.editText_edit_contact_last_name);
         mobileNumber = (EditText) findViewById(R.id.editText_edit_contact_number);

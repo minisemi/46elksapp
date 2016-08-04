@@ -52,19 +52,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_contact_first_name"
+        android:ems="10"
         android:id="@+id/editText_edit_contact_first_name"
         android:layout_weight="0"
         android:layout_gravity="center"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_contact_last_name"
+        android:ems="10"
         android:id="@+id/editText_edit_contact_last_name"
         android:layout_weight="0"
         android:layout_gravity="center"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -77,22 +81,29 @@
         android:layout_gravity="center"
         android:gravity="top|center" />
 
-    <Button
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/action_edit_contact"
-        android:id="@+id/action_edit_contact"
-        android:layout_weight="0"
-        style="@style/ButtonTheme"
-        android:layout_gravity="center" />
+        android:layout_gravity="center">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/action_delete_contact"
-        android:id="@+id/action_delete_contact"
-        android:layout_weight="0"
-        style="@style/ButtonTheme"
-        android:layout_gravity="center" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_delete_contact"
+            android:id="@+id/action_delete_contact"
+            android:layout_weight="0"
+            style="@style/ButtonTheme"
+            android:layout_gravity="center" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_edit_contact"
+            android:id="@+id/action_edit_contact"
+            android:layout_weight="0"
+            style="@style/ButtonTheme"
+            android:layout_gravity="center" />
+    </LinearLayout>
 
 </LinearLayout>

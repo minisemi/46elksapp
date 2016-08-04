@@ -22,18 +22,22 @@ public final class DataBaseContract {
         //...
     }
 
-    public static abstract class GroupEntry implements BaseColumns {
-        public static final String TABLE_NAME = "groups";
-        public static final String COLUMN_NAME_CONTACT_ID = "contact_id";
-        //...
-    }
-
     public static abstract class GroupsEntry implements BaseColumns {
         public static final String TABLE_NAME = "groups";
-        public static final String COLUMN_NAME_CONTACT_ID = "group_id";
+        public static final String COLUMN_NAME_NULLABLE = null;
+        public static final String COLUMN_NAME_GROUP_ID = "group_id";
+        public static final String COLUMN_NAME_GROUP_NAME = "group_name";
+
         //...
     }
 
+    public static abstract class ContainingEntry implements BaseColumns {
+        public static final String TABLE_NAME = "containing";
+        public static final String COLUMN_NAME_GROUP_ID = "group_id";
+        public static final String COLUMN_NAME_CONTACT_ID = "contact_id";
+        public static final String COLUMN_NAME_NULLABLE = null;
+        //...
+    }
 
 
     public static abstract class HistoryEntry implements BaseColumns {

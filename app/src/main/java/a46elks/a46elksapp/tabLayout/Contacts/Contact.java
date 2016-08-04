@@ -1,13 +1,16 @@
 package a46elks.a46elksapp.tabLayout.Contacts;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Alexander on 2016-07-11.
  */
-public class Contact {
+public class Contact implements Parcelable {
 
     //  might need to put this in sessionmanager
     private static AtomicInteger sequenceNumber = new AtomicInteger();
@@ -41,4 +44,38 @@ public class Contact {
     public void removeContainingGroup (String group){ containingGroups.remove(group);}
     public void setContactID (Integer contactID){this.contactID = contactID;}
     public void setAtomicInteger (Integer sequenceNumber){this.sequenceNumber.set(sequenceNumber);}
+
+    @Override
+    public void writeToParcel(Parcel pc, int flags) {
+        pc.writeInt(contactID);
+        pc.writeString(firstName);
+        pc.writeString(lastName);
+        pc.writeString(mobileNumber);
+
+    }
+
+    /** Static field used to regenerate object, individually or as arrays */
+    public static final Parcelable.Creator<Contact> CREATOR = new Parcelable.Creator<Contact>() {
+        public Contact createFromParcel(Parcel pc) {
+            return new Contact(pc);
+        }
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
+
+    /**Ctor from Parcel, reads back fields IN THE ORDER they were written */
+    public Contact(Parcel pc){
+        contactID         = pc.readInt();
+        firstName      = pc.readString();
+        lastName      = pc.readString();
+        mobileNumber      = pc.readString();
+    }
+
+    /** Used to give additional hints on how to process the received parcel.*/
+    @Override
+    public int describeContents() {
+// ignore for now
+        return 0;
+    }
 }

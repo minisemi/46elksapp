@@ -17,12 +17,14 @@ import java.util.List;
 
 import a46elks.a46elksapp.R;
 import a46elks.a46elksapp.tabLayout.Contacts.Contact;
+import a46elks.a46elksapp.tabLayout.Groups.Group;
 import a46elks.a46elksapp.tabLayout.History.HistoryListItem;
 
 public class CustomListViewAdapter extends ArrayAdapter {
     private final Context context;
     private List<HistoryListItem> valuesHistory;
     private List<Contact> valuesContacts;
+    private List<Group> valuesGroups;
     private final String LISTVIEWADAPTER_ACTION;
     private JsonParser jsonParser;
 
@@ -34,7 +36,10 @@ public class CustomListViewAdapter extends ArrayAdapter {
         switch (LISTVIEWADAPTER_ACTION) {
             case "CONTACTS":
                 this.valuesContacts = values;
-                jsonParser = new JsonParser();
+                break;
+
+            case "GROUPS":
+                this.valuesGroups = values;
                 break;
 
             case "HISTORY":
@@ -53,10 +58,6 @@ public class CustomListViewAdapter extends ArrayAdapter {
         TextView textView;
 
         switch (LISTVIEWADAPTER_ACTION){
-
-            case "RECEIVER": populateReceivers();
-                            break;
-
 
             case "CONTACTS": //populateAddressBook();
                 //flytta till metoden
@@ -78,7 +79,14 @@ public class CustomListViewAdapter extends ArrayAdapter {
                 //textView.setText(valuesHistory.get(position));
                 return rowView;
 
-            case "SETTINGS":
+            case "GROUPS":
+                rowView = inflater.inflate(R.layout.list_item_groups, parent, false);
+                TextView groupName = (TextView) rowView.findViewById(R.id.text_group_name);
+                TextView groupSize = (TextView) rowView.findViewById(R.id.text_group_size);
+                groupName.setText(valuesGroups.get(position).getName());
+                groupSize.setText("Consists of " + valuesGroups.get(position).getSize() + " contacts");
+                break;
+
 
             case "HISTORY":
                 rowView = inflater.inflate(R.layout.list_item_history, parent, false);
@@ -88,6 +96,8 @@ public class CustomListViewAdapter extends ArrayAdapter {
                 progressBar.setMax(valuesHistory.get(position).getProgressMax());
                 progressBar.setProgress(valuesHistory.get(position).getProgress());
                 return rowView;
+
+            case "SETTINGS":
 
             default:
                 rowView = convertView;
@@ -101,12 +111,5 @@ public class CustomListViewAdapter extends ArrayAdapter {
         return rowView;
     }
 
-    protected void populateReceivers (){
-
-    }
-
-    protected void populateAddressBook (){
-
-    }
 
 }

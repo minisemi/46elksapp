@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,10 +24,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<Contact>> _listDataChild;
+    private HashMap<String, ArrayList<Contact>> _listDataChild;
 
     public CustomExpandableListAdapter(Context context, List<String> listDataHeader,
-                                       HashMap<String, List<Contact>> listChildData) {
+                                       HashMap<String, ArrayList<Contact>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;

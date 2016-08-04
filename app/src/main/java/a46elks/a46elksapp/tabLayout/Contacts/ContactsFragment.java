@@ -32,7 +32,7 @@ public class ContactsFragment extends Fragment{
     public static final String ARG_PAGE = "ARG_PAGE";
     private static final String LISTVIEWADAPTER_ACTION = "CONTACTS";
     private final int REQUEST_CODE_ADD_CONTACT = 0, REQUEST_CODE_EDIT_CONTACT = 1;
-    private List<Contact> contactsList, contactsToSend;
+    private ArrayList<Contact> contactsList, contactsToSend;
     private SessionManager sessionManager;
     private Context context;
     private JsonParser jsonParser;
@@ -61,7 +61,6 @@ public class ContactsFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        jsonParser = new JsonParser();
         chooseMode = false;
         contactsToSend = new ArrayList<>();
 
@@ -141,11 +140,12 @@ public class ContactsFragment extends Fragment{
              @Override
              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                 TextView firstName = (TextView) view.findViewById(R.id.text_contact_first_name);
+                 TextView lastName = (TextView) view.findViewById(R.id.text_contact_last_name);
+                 TextView mobileNumber = (TextView) view.findViewById(R.id.text_contact_mobile_number);
+
                  if (chooseMode){
 
-                         TextView firstName = (TextView) view.findViewById(R.id.text_contact_first_name);
-                         TextView lastName = (TextView) view.findViewById(R.id.text_contact_last_name);
-                         TextView mobileNumber = (TextView) view.findViewById(R.id.text_contact_mobile_number);
                      if (!contactsToSend.contains(contactsList.get(position))){
 
                      view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -163,9 +163,6 @@ public class ContactsFragment extends Fragment{
 
                  } else {
 
-                 TextView firstName = (TextView) view.findViewById(R.id.text_contact_first_name);
-                 TextView lastName = (TextView) view.findViewById(R.id.text_contact_last_name);
-                 TextView mobileNumber = (TextView) view.findViewById(R.id.text_contact_mobile_number);
                  Intent intent = new Intent(context, EditContactActivity.class);
                  intent.putExtra("CONTACT_FIRST_NAME", firstName.getText().toString());
                  intent.putExtra("CONTACT_LAST_NAME", lastName.getText().toString());
@@ -265,7 +262,7 @@ public class ContactsFragment extends Fragment{
         }
     }
 
-    public void chooseContacts (List<Contact> contactsToSend){
+    public void chooseContacts (ArrayList<Contact> contactsToSend){
 
         this.contactsToSend = contactsToSend;
         contactsText.setText(getResources().getString(R.string.text_choose_contacts));

@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
@@ -21,9 +24,10 @@ public class CreateGroupActivity extends AppCompatActivity {
 
     private CustomListViewAdapter contactsListViewAdapter;
     private ListView contactsListView;
-    private List<Contact> contactsList;
+    private ArrayList<Contact> contactsList;
+    private ArrayList<Contact> chosenContactsList;
     private SessionManager sessionManager;
-    private EditText groupName, senderName;
+    private EditText groupName;
     private static final String LISTVIEWADAPTER_ACTION = "CONTACTS";
     private FragmentCommunicator fragmentCommunicator;
 
@@ -34,10 +38,10 @@ public class CreateGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         groupName = (EditText) findViewById(R.id.editText_group_name);
-        senderName = (EditText) findViewById(R.id.editText_sender_name);
         contactsListView = (ListView) findViewById(R.id.listView_add_contacts);
         sessionManager = new SessionManager(getApplicationContext());
         contactsList = sessionManager.getContacts();
+        chosenContactsList = new ArrayList<>();
         contactsListViewAdapter = new CustomListViewAdapter(this, LISTVIEWADAPTER_ACTION, contactsList);
         contactsListView.setAdapter(contactsListViewAdapter);
 
@@ -59,6 +63,29 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
 
+
+        contactsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                TextView groupName = (TextView) view.findViewById(R.id.text_group_name);
+                TextView groupSize = (TextView) view.findViewById(R.id.text_group_size);
+
+                if (!chosenContactsList.contains(contactsList.get(position))){
+
+                    view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    groupName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                    groupSize.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                    chosenContactsList.add(contactsList.get(position));
+                } else {
+                    groupName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    groupSize.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    view.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
+                    chosenContactsList.remove(contactsList.get(position));
+                }
+            }
+        });
+
     }
 
     private void attemptCreate() {
@@ -67,21 +94,13 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         groupName.setError(null);
         //lastName.setError(null);
-        senderName.setError(null);
 
         // Store values at the time of the login attempt.
         String group = groupName.getText().toString();
-        String sender = senderName.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(sender)) {
-            senderName.setError(getString(R.string.error_field_required));
-            focusView = senderName;
-            cancel = true;
-        }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(group)) {
@@ -98,9 +117,10 @@ public class CreateGroupActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             Intent intent = new Intent();
-            /*intent.putExtra("CONTACT_FIRST_NAME", firstName.getText().toString());
-            intent.putExtra("CONTACT_LAST_NAME", lastName.getText().toString());
-            intent.putExtra("CONTACT_MOBILE_NUMBER", mobileNumber.getText().toString());*/
+
+            intent.putExtra("GROUP_NAME", groupName.getText().toString());
+            intent.putParcelableArrayListExtra("CONTAINING_CONTACTS", chosenContactsList);
+
             setResult(RESULT_OK, intent);
             finish();
 

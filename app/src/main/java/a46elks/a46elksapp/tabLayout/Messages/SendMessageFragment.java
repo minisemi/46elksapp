@@ -20,6 +20,7 @@ import a46elks.a46elksapp.SessionManager;
 import a46elks.a46elksapp.tabLayout.Contacts.Contact;
 import a46elks.a46elksapp.tabLayout.Adapters.CustomExpandableListAdapter;
 import a46elks.a46elksapp.tabLayout.FragmentCommunicator;
+import a46elks.a46elksapp.tabLayout.Groups.Group;
 
 /**
  * Created by Alexander on 2016-06-29.
@@ -29,12 +30,12 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String LISTVIEWADAPTER_ACTION = "RECEIVER";
     private List<String> listDataHeader;
-    private HashMap<String, List<Contact>> listDataChild;
+    private HashMap<String, ArrayList<Contact>> listDataChild;
     private SendMessageFragment sendMessageFragment = this;
     private EditText editTextMessage;
     private FragmentCommunicator fragmentCommunicator;
     private SessionManager sessionManager;
-    private List<Contact> contactList;
+    private ArrayList<Contact> contactList;
     private CustomExpandableListAdapter adapter;
     private ExpandableListView expandableListView;
 
@@ -180,7 +181,36 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
         expandableListView.setAdapter(adapter);
     }
 
-    public void populateContacts (List<Contact> contactList){
+    public void populateContacts (ArrayList<Contact> contactList){
+
+        this.contactList = contactList;
+
+        if (listDataHeader.contains("Contacts") && contactList.size()==0){
+            listDataHeader.remove("Contacts");
+            adapter.notifyDataSetChanged();
+            return;
+        }
+
+        if (listDataHeader.contains("Contacts") && contactList.size()>0){
+            listDataChild.put(listDataHeader.get(listDataHeader.indexOf("Contacts")), this.contactList);
+            adapter.notifyDataSetChanged();
+            expandableListView.expandGroup(listDataHeader.indexOf("Contacts"));
+            return;
+        }
+
+        if (!listDataHeader.contains("Contacts") && contactList.size()>0){
+
+            listDataHeader.add("Contacts");
+            listDataChild.put(listDataHeader.get(listDataHeader.indexOf("Contacts")), this.contactList);
+            expandableListView.expandGroup(listDataHeader.indexOf("Contacts"));
+            adapter.notifyDataSetChanged();
+
+        }
+
+
+    }
+
+    public void populateGroups (ArrayList<Group> groupList){
 
         this.contactList = contactList;
 

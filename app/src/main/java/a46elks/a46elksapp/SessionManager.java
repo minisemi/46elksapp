@@ -18,6 +18,7 @@ import java.util.List;
 import a46elks.a46elksapp.dataBase.DataBaseContract;
 import a46elks.a46elksapp.dataBase.DataBaseHelper;
 import a46elks.a46elksapp.tabLayout.Contacts.Contact;
+import a46elks.a46elksapp.tabLayout.Groups.Group;
 
 /**
  * Created by Alexander on 2016-07-22.
@@ -28,7 +29,9 @@ public class SessionManager {
     private static SQLiteDatabase writableDatabase;
     private static SQLiteDatabase readableDatabase;
     private static SharedPreferences pref;
-    private static int highestContactID = 0;
+    private static int highestContactID = 0, highestGroupID = 0;
+    private static ArrayList<Contact> contactsList;
+
 
     // Editor for Shared preferences
     private static SharedPreferences.Editor editor;
@@ -53,19 +56,10 @@ public class SessionManager {
     // Email address (make variable public to access from outside)
     private static final String KEY_API_PASSWORD = "secret";
 
-    // Groups and contacts
-    //private HashSet<String> groups, contacts;
-    //private HashMap<String, HashSet<String>> groupMap;
-
 
     // Constructor
     public SessionManager(Context context){
         this.context = context;
-
-        /*groups = new HashSet<String>();
-        contacts = new HashSet<String>();
-        groupMap = new HashMap<>();*/
-
     }
 
     public void createLoginSession ( String apiPassword, String apiUserName){
@@ -74,6 +68,7 @@ public class SessionManager {
         mDbHelper = new DataBaseHelper(context, PREF_NAME+".db");
         writableDatabase = mDbHelper.getWritableDatabase();
         readableDatabase = mDbHelper.getReadableDatabase();
+        contactsList = new ArrayList<Contact>();
 
         //pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
@@ -81,36 +76,14 @@ public class SessionManager {
         editor.clear();
         editor.putBoolean(IS_LOGIN, true);
 
-
         // Storing name in pref
 
         editor.putString("id", apiUserName);
 
         // Storing pw in pref
         editor.putString("secret", apiPassword);
-
-        /*if (!pref.contains("groups") || !pref.contains("contacts")) {
-            HashSet<String> hashSetGroups = new HashSet<>();
-            HashSet<String> hashSetContacts = new HashSet<>();
-            editor.putStringSet("groups", hashSetGroups);
-            editor.putStringSet("contacts", hashSetContacts);
-        }*/
-        //editor.remove("contacts");
-
-        // apply changes. MIGHT NEED TO REPLACE APPLY WITH COMMIT.
         editor.commit();
 
-
-
-
-       /* for (String group : pref.getStringSet("groups", null)){
-            groupMap.put(group, (HashSet<String>) pref.getStringSet(group, null));
-            groups.add(group);
-        }
-
-        for (String contact : pref.getStringSet("contacs", null)) {
-            contacts.add(contact);
-        }*/
     }
 
     public HashMap<String, String> getUserDetails(){
@@ -125,58 +98,160 @@ public class SessionManager {
         return user;
     }
 
-    public void createGroup (String group){
-        //pref.getStringSet("groups", null).add(group);
-        HashSet<String> hashSetGroups = (HashSet<String>) pref.getStringSet("groups", null);
-        HashSet<String> groupHashSet = new HashSet<String>();
-        hashSetGroups.add(group);
-       // editor = pref.edit();
-        editor.putStringSet(group, groupHashSet);
-        editor.putStringSet("groups", hashSetGroups);
-        editor.commit();
+    public void createGroup (Group group){
+
+        ContentValues values = new ContentValues();
+        values.put(DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_ID, group.getGroupID());
+        values.put(DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_NAME, group.getName());
+
+// Insert the new row, returning the primary key value of the new row
+        writableDatabase.insert(
+                DataBaseContract.GroupsEntry.TABLE_NAME,
+                DataBaseContract.GroupsEntry.COLUMN_NAME_NULLABLE,
+                values);
+
+        ArrayList<Contact> containingContacts = group.getContainingContacts();
+
+        if (containingContacts.size()>0){
+
+            for (Contact contact : containingContacts){
+
+            values = new ContentValues();
+            values.put(DataBaseContract.ContainingEntry.COLUMN_NAME_GROUP_ID, group.getGroupID());
+            values.put(DataBaseContract.ContainingEntry.COLUMN_NAME_CONTACT_ID, contact.getContactID());
+
+// Insert the new row, returning the primary key value of the new row
+            writableDatabase.insert(
+                    DataBaseContract.ContainingEntry.TABLE_NAME,
+                    DataBaseContract.ContainingEntry.COLUMN_NAME_NULLABLE,
+                    values);
+            }
+
+        }
     }
 
-    public void removeGroup (String group){
-        HashSet<String> hashSetGroups = (HashSet<String>) pref.getStringSet("groups", null);
-        hashSetGroups.remove(group);
-        //pref.getStringSet("groups", null).remove(group);
-       // editor = pref.edit();
-        editor.putStringSet("groups", hashSetGroups);
-        editor.remove(group);
-        editor.commit();
+    public void deleteGroup (Group group){
+
+        // Define 'where' part of query.
+        String selection = DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_ID + " LIKE ?";
+
+        String groupID = group.getGroupID();
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { groupID };
+        // Issue SQL statement.
+        writableDatabase.delete(DataBaseContract.GroupsEntry.TABLE_NAME, selection, selectionArgs);
+
+        ArrayList<Contact> containingContacts = group.getContainingContacts();
+
+        if (containingContacts.size()>0){
+
+// Insert the new row, returning the primary key value of the new row
+                writableDatabase.delete(
+                        DataBaseContract.ContainingEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+
+        }
 
     }
 
-    public List<String> getGroups (){
-        List <String> groups = new ArrayList<String>(pref.getStringSet("groups", null));
-        return groups;
+    public void updateGroup (Group group){
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put(DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_NAME, group.getName());
+
+// Which row to update, based on the ID
+        String selection = DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_ID + " LIKE ?";
+        String[] selectionArgs = { group.getGroupID() };
+
+        writableDatabase.update(
+                DataBaseContract.GroupsEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+
     }
 
-    public void addContactToGroup (String group, String contact){
-        //pref.getStringSet(group, null).add(contact);
-        HashSet<String> groupHashSet = (HashSet<String>) pref.getStringSet(group, null);
-        groupHashSet.add(contact);
-        editor = pref.edit();
-        editor.putStringSet(group, groupHashSet);
-        editor.commit();
+    // Called upon start
+    public ArrayList<Group> getGroups (){
+        ArrayList<Group> groupsList = new ArrayList<Group>();
+
+        //hp = new HashMap();
+        Cursor cursor =  readableDatabase.rawQuery( "select * from " + DataBaseContract.GroupsEntry.TABLE_NAME, null );
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast()){
+            String groupID = cursor.getString(cursor.getColumnIndex(DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_ID));
+
+            ContentValues values = new ContentValues();
+            values.put(DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_ID, highestGroupID);
+            String selection = DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_ID + " LIKE ?";
+            String[] selectionArgs = { groupID };
+
+            writableDatabase.update(
+                    DataBaseContract.GroupsEntry.TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs);
+
+            writableDatabase.update(
+                    DataBaseContract.ContainingEntry.TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs);
+
+
+            String groupName = cursor.getString(cursor.getColumnIndex(DataBaseContract.GroupsEntry.COLUMN_NAME_GROUP_NAME));
+
+            Cursor containingCursor =  readableDatabase.rawQuery( "select " + DataBaseContract.ContainingEntry.COLUMN_NAME_CONTACT_ID +
+                    " from " + DataBaseContract.ContainingEntry.TABLE_NAME +
+                    "where " + DataBaseContract.ContainingEntry.COLUMN_NAME_GROUP_ID + " = " + groupID, null );
+
+            containingCursor.moveToFirst();
+            ArrayList<Contact> containingContacts = new ArrayList<>();
+
+            while(!containingCursor.isAfterLast()){
+
+                int contactID = containingCursor.getInt(containingCursor.getColumnIndex(DataBaseContract.ContainingEntry.COLUMN_NAME_CONTACT_ID));
+                containingContacts.add(contactsList.get(contactID));
+                containingCursor.moveToNext();
+            }
+
+            Group group = new Group(groupName, containingContacts);
+            groupsList.add(group);
+            cursor.moveToNext();
+            highestGroupID++;
+        }
+
+        return groupsList;
     }
 
-    public void removeContactFromGroup (String group, String contact){
-        //pref.getStringSet(group, null).remove(contact);
-        HashSet<String> groupHashSet = (HashSet<String>) pref.getStringSet(group, null);
-        groupHashSet.remove(contact);
-      //  editor = pref.edit();
-        editor.putStringSet(group, groupHashSet);
-        editor.commit();
+    public void addContactToGroup (Group group, Contact contact){
+        ContentValues values = new ContentValues();
+        values.put(DataBaseContract.ContainingEntry.COLUMN_NAME_GROUP_ID, group.getGroupID());
+        values.put(DataBaseContract.ContainingEntry.COLUMN_NAME_CONTACT_ID, contact.getContactID());
+
+// Insert the new row, returning the primary key value of the new row
+        writableDatabase.insert(
+                DataBaseContract.ContainingEntry.TABLE_NAME,
+                DataBaseContract.ContainingEntry.COLUMN_NAME_NULLABLE,
+                values);
+    }
+
+    public void removeContactFromGroup (Group group, Contact contact){
+
+        // Define 'where' part of query.
+        String selection = DataBaseContract.ContainingEntry.COLUMN_NAME_GROUP_ID +
+                ", " + DataBaseContract.ContainingEntry.COLUMN_NAME_CONTACT_ID +
+                " WHERE " + DataBaseContract.ContainingEntry.COLUMN_NAME_GROUP_ID + " = ?" +
+                " AND " + DataBaseContract.ContainingEntry.COLUMN_NAME_CONTACT_ID + " = ?";
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { group.getGroupID(), contact.getContactID() };
+        // Issue SQL statement.
+        writableDatabase.delete(DataBaseContract.ContainingEntry.TABLE_NAME, selection, selectionArgs);
     }
 
     public void createContact (Contact contact){
-        //pref.getStringSet("contacts", null).add(contact);
-        /*HashSet<String> hashSetContacts = (HashSet<String>) pref.getStringSet("contacts", null);
-        hashSetContacts.add(contact);
-      //  editor = pref.edit();
-        editor.putStringSet("contacts", hashSetContacts);
-        editor.commit();*/
 
 
 // Create a new map of values, where column names are the keys
@@ -203,29 +278,10 @@ public class SessionManager {
         // Issue SQL statement.
         writableDatabase.delete(DataBaseContract.ContactsEntry.TABLE_NAME, selection, selectionArgs);
 
-
-
-        /*HashSet<String> hashSetContacts = (HashSet<String>) pref.getStringSet("contacts", null);
-        hashSetContacts.remove(contact);
-        //pref.getStringSet("contacts", null).remove(contact);
-
-        JsonArray containingGroups = jsonParser.parse(contact).getAsJsonObject().get("CONTACT_CONTAINING_GROUPS").getAsJsonArray();
-
-       // editor = pref.edit();
-        if (containingGroups.size() != 0) {
-
-            for (int i = 0; i < containingGroups.size(); i++) {
-                String group = containingGroups.get(i).getAsString();
-                HashSet<String> groupHashSet = (HashSet<String>) pref.getStringSet(group, null);
-                groupHashSet.remove(contact);
-                editor.putStringSet(group, groupHashSet);
-                //pref.getStringSet(group,null).remove(contact);
-            }
-
-        }
-
-        editor.putStringSet("contacts", hashSetContacts);
-        editor.commit();*/
+        writableDatabase.delete(
+                DataBaseContract.ContainingEntry.TABLE_NAME,
+                selection,
+                selectionArgs);
     }
 
     public void updateContact (Contact contact){
@@ -248,47 +304,10 @@ public class SessionManager {
                 selection,
                 selectionArgs);
 
-
-       // editor = pref.edit();
-        //pref.getStringSet("contacts", null).remove(oldContact);
-        //pref.getStringSet("contacts", null).add((newContact));
-        /*HashSet<String> hashSetContacts = (HashSet<String>) pref.getStringSet("contacts", null);
-        hashSetContacts.remove(oldContact);
-        hashSetContacts.add(newContact);
-        editor.putStringSet("contacts", hashSetContacts);
-
-        JsonArray containingGroups = jsonParser.parse(oldContact).getAsJsonObject().get("CONTACT_CONTAINING_GROUPS").getAsJsonArray();
-
-        if (containingGroups.size() != 0) {
-
-            for (int i = 0; i < containingGroups.size(); i++) {
-                String group = containingGroups.get(i).getAsString();
-                //pref.getStringSet(group,null).remove(oldContact);
-                //pref.getStringSet(group,null).add(newContact);
-                HashSet<String> groupHashSet = (HashSet<String>) pref.getStringSet(group, null);
-                groupHashSet.remove(oldContact);
-                groupHashSet.add(newContact);
-                editor.putStringSet(group, groupHashSet);
-
-            }
-
-        }
-        if (!containingGroups.isEmpty()) {
-
-            for (String group : containingGroups){
-                pref.getStringSet(group, null).remove(oldContact);
-                pref.getStringSet(group, null).add(newContact);
-                /*HashSet<String> groupHashSet = (HashSet<String>) pref.getStringSet(group, null);
-                groupHashSet.add(contact);
-                editor.putStringSet(group, groupHashSet);
-            }
-
-        }
-        editor.commit();*/
     }
 
-    public List<Contact> getContacts (){
-        List<Contact> contactsList = new ArrayList<Contact>();
+    // Called upon start
+    public ArrayList<Contact> getContacts (){
 
         //hp = new HashMap();
         Cursor cursor =  readableDatabase.rawQuery( "select * from " + DataBaseContract.ContactsEntry.TABLE_NAME, null );
@@ -308,6 +327,13 @@ public class SessionManager {
                     selection,
                     selectionArgs);
 
+            writableDatabase.update(
+                    DataBaseContract.ContainingEntry.TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs);
+
+
             String firstName = cursor.getString(cursor.getColumnIndex(DataBaseContract.ContactsEntry.COLUMN_NAME_FIRST_NAME));
             String lastName = cursor.getString(cursor.getColumnIndex(DataBaseContract.ContactsEntry.COLUMN_NAME_LAST_NAME));
             String mobileNumber = cursor.getString(cursor.getColumnIndex(DataBaseContract.ContactsEntry.COLUMN_NAME_MOBILE_NUMBER));
@@ -321,7 +347,6 @@ public class SessionManager {
 
         return contactsList;
 
-       // return new ArrayList<String>(pref.getStringSet("contacts", null));
     }
 
     public int getHighestContactID (){ return highestContactID;}

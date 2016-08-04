@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import a46elks.a46elksapp.R;
@@ -34,8 +36,11 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
     private FragmentCommunicator fragmentCommunicator;
     private CustomListViewAdapter groupsListViewAdapter;
     private ListView groupsListView;
-    private List<Contact> groupsList;
+    private ArrayList<Group> groupsList, groupsToSend;
     private static final String LISTVIEWADAPTER_ACTION = "GROUPS";
+    private Boolean chooseMode;
+    private TextView groupsText;
+    private Button addGroup;
 
 
     private final int REQUEST_CODE_ADD_GROUP = 0, REQUEST_CODE_EDIT_GROUP = 1;
@@ -51,7 +56,9 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // mPage = getArguments().getInt(ARG_PAGE);
+        chooseMode = false;
+        groupsToSend = new ArrayList<>();
+        // mPage = getArguments().getInt(ARG_PAGE);
 
     }
 
@@ -60,6 +67,9 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
         sessionManager = fragmentCommunicator.getSessionManager();
+        groupsList = sessionManager.getGroups();
+        groupsListViewAdapter = new CustomListViewAdapter(context, LISTVIEWADAPTER_ACTION, groupsList);
+        groupsListView.setAdapter(groupsListViewAdapter);
 
     }
 
@@ -68,6 +78,7 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
+        groupsListView = (ListView) view.findViewById(R.id.listView_groups);
 
         return view;
     }
@@ -76,32 +87,61 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        addGroup = (Button) view.findViewById(R.id.action_add_group);
+        groupsText = (TextView) view.findViewById(R.id.text_group_name);
 
         view.findViewById(R.id.action_add_group).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, CreateGroupActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_ADD_GROUP);
+                if (chooseMode){
+                    chooseMode = false;
+                    groupsText.setText(getResources().getString(R.string.text_groups));
+                    addGroup.setText(getResources().getString(R.string.action_add_group));
+                    groupsListViewAdapter.notifyDataSetChanged();
+
+                    fragmentCommunicator.finishChooseGroups(groupsToSend);
+
+                } else {
+
+                    Intent intent = new Intent(context, CreateGroupActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_ADD_GROUP);
+                }
+
             }
         });
 
-        groupsListView = (ListView) view.findViewById(R.id.listView_groups);
 
         groupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TextView firstName = (TextView) view.findViewById(R.id.text_contact_first_name);
-                TextView lastName = (TextView) view.findViewById(R.id.text_contact_last_name);
-                TextView mobileNumber = (TextView) view.findViewById(R.id.text_contact_mobile_number);
-                Intent intent = new Intent(context, EditContactActivity.class);
-                intent.putExtra("CONTACT_FIRST_NAME", firstName.getText().toString());
-                intent.putExtra("CONTACT_LAST_NAME", lastName.getText().toString());
-                intent.putExtra("CONTACT_MOBILE_NUMBER", mobileNumber.getText().toString());
-                // REMOVE TEXTVIEW CONTACT_ID FROM XML
-                intent.putExtra("POSITION", position);
-                startActivityForResult(intent, REQUEST_CODE_EDIT_GROUP);
+                TextView groupName = (TextView) view.findViewById(R.id.text_group_name);
+                TextView groupSize = (TextView) view.findViewById(R.id.text_group_size);
+
+                if (chooseMode){
+
+                    if (!groupsToSend.contains(groupsList.get(position))){
+
+                        view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        groupName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                        groupSize.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                        groupsToSend.add(groupsList.get(position));
+                    } else {
+                        groupName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                        groupSize.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                        view.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
+                        groupsToSend.remove(groupsList.get(position));
+                    }
+
+                } else {
+
+                    Intent intent = new Intent(context, EditGroupActivity.class);
+                    intent.putExtra("GROUP_NAME", groupName.getText().toString());
+                    intent.putExtra("POSITION", position);
+                    intent.putParcelableArrayListExtra("CONTAINING_CONTACTS", groupsList.get(position).getContainingContacts());
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_GROUP);
+                }
             }
         });
     }
@@ -111,17 +151,15 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
         super.onActivityResult(requestCode, resultCode, data);
         Bundle extras = data.getExtras();
 
-
         switch (requestCode){
 
             // Add contact
             case REQUEST_CODE_ADD_GROUP:
                 if (resultCode != Activity.RESULT_CANCELED){
-                    String firstName = extras.getString("CONTACT_FIRST_NAME");
-                    String lastName = extras.getString("CONTACT_LAST_NAME");
-                    String mobileNumber = extras.getString("CONTACT_MOBILE_NUMBER");
-                    Contact contact = new Contact(firstName, lastName, mobileNumber);
-                    sessionManager.createContact(contact);
+                    String groupName = extras.getString("GROUP_NAME");
+                    ArrayList<Contact> containingContacts = extras.getParcelableArrayList("CONTAINING_CONTACTS");
+                    Group group = new Group(groupName, containingContacts);
+                    sessionManager.createGroup(group);
                     //JsonObject contact = new JsonObject();
                     /*contact.addProperty("CONTACT_FIRST_NAME", firstName);
                     contact.addProperty("CONTACT_LAST_NAME", lastName);
@@ -129,7 +167,7 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
                     contact.add("CONTACT_CONTAINING_GROUPS", new JsonArray());*/
                     //sessionManager.createContact(contact.toString());
 
-                    groupsList.add(contact);
+                    groupsList.add(group);
                     //Collections.sort(contactsList);
                     groupsListViewAdapter.notifyDataSetChanged();
                 }
@@ -144,7 +182,7 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
                     case Activity.RESULT_OK:
                         position = extras.getInt("POSITION");
                         //might need to use "set" instead of "get"
-                        groupsList.get(position).setFirstName(extras.getString("CONTACT_FIRST_NAME"));
+                        groupsList.get(position).setName(extras.getString("CONTACT_FIRST_NAME"));
                         groupsList.get(position).setLastName(extras.getString("CONTACT_LAST_NAME"));
                         groupsList.get(position).setMobileNumber(extras.getString("CONTACT_MOBILE_NUMBER"));
                         sessionManager.updateContact(groupsList.get(position));
@@ -192,5 +230,28 @@ public class GroupsFragment extends android.support.v4.app.Fragment{
             throw new ClassCastException(context.toString()
                     + " must implement OnEventStartedListener");
         }
+    }
+
+    public void chooseContacts (ArrayList<Contact> contactsToSend){
+
+        this.contactsToSend = contactsToSend;
+        contactsText.setText(getResources().getString(R.string.text_choose_contacts));
+        addContact.setText(getResources().getString(R.string.action_choose_contacts));
+        chooseMode = true;
+        for (Contact contact : this.contactsToSend){
+            View child = getViewByPosition(contactsList.indexOf(contact), contactsListView);
+            child.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            TextView firstName = (TextView) child.findViewById(R.id.text_contact_first_name);
+            TextView lastName = (TextView) child.findViewById(R.id.text_contact_last_name);
+            TextView mobileNumber = (TextView) child.findViewById(R.id.text_contact_mobile_number);
+            firstName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+            lastName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+            mobileNumber.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+            child.refreshDrawableState();
+        }
+
+        //contactsListView.performItemClick(contactsListView, 0, 1);
+
+
     }
 }
