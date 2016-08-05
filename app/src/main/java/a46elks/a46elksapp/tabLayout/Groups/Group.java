@@ -51,7 +51,7 @@ public class Group {
         containingContacts.add(contact);
     }
 
-    public void removeContainingGroup(Contact contact) {
+    public void removeContainingContact(Contact contact) {
         containingContacts.remove(contact);
     }
 

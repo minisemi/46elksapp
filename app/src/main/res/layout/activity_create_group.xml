@@ -11,39 +11,6 @@
     android:orientation="vertical"
     android:background="@android:color/background_light">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/text_add_group"
-            android:id="@+id/text_create_group"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="0"
-            android:gravity="center"
-            android:layout_gravity="center" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="@string/prompt_name_of_group"
-            android:ems="10"
-            android:id="@+id/editText_group_name"
-            android:layout_below="@+id/text_create_group"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="0"
-            android:gravity="center"
-            android:layout_gravity="center" />
-
-    </LinearLayout>
-
     <TabHost
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -52,7 +19,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentEnd="false"
         android:layout_alignParentRight="false"
-        android:layout_weight="4">
+        android:layout_weight="4"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,12 +44,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/listView_add_contacts"
-                        android:layout_gravity="center_horizontal" />
 
                 </LinearLayout>
 
@@ -140,16 +102,64 @@
         </LinearLayout>
     </TabHost>
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/action_create_group"
-        android:id="@+id/action_create_group"
-        android:layout_below="@+id/tabHost"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_add_group"
+        android:id="@+id/text_create_group"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_weight="0"
-        style="@style/ButtonTheme"
-        android:layout_gravity="center_horizontal" />
+        android:gravity="center"
+        android:layout_gravity="center" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/prompt_name_of_group"
+        android:ems="10"
+        android:id="@+id/editText_group_name"
+        android:layout_below="@+id/text_create_group"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_gravity="center" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView_add_contacts"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_create_group"
+            android:id="@+id/action_create_group"
+            android:layout_below="@+id/tabHost"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0"
+            style="@style/ButtonTheme"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            style="@style/ButtonTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_add_group_cancel"
+            android:id="@+id/action_add_group_cancel"
+            android:layout_below="@+id/tabHost"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -103,6 +103,7 @@
 
     <!-- Strings related to AddGroupActivity -->
     <string name="text_add_group">Create Group</string>
+    <string name="action_add_group_cancel">Cancel</string>
 
     <!-- Strings related to EditGroupActivity -->
     <string name="text_edit_group">Edit Group</string>

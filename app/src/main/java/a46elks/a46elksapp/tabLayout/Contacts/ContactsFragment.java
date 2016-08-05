@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import a46elks.a46elksapp.R;
 import a46elks.a46elksapp.SessionManager;
@@ -63,6 +62,7 @@ public class ContactsFragment extends Fragment{
         super.onCreate(savedInstanceState);
         chooseMode = false;
         contactsToSend = new ArrayList<>();
+        setRetainInstance(true);
 
 
         // mPage = getArguments().getInt(ARG_PAGE);
@@ -75,13 +75,14 @@ public class ContactsFragment extends Fragment{
         context = getActivity();
         sessionManager = fragmentCommunicator.getSessionManager();
         contactsList = sessionManager.getContacts();
+        contactsListViewAdapter = new CustomListViewAdapter(context, LISTVIEWADAPTER_ACTION, contactsList);
+        contactsListView.setAdapter(contactsListViewAdapter);
+
 
         // SET ATOMICINTEGER FOR CONTACTS DEPENDING ON HIGHEST ID IN LIST
         //Collections.sort(contactsList);
         //ontactsListViewAdapter.notifyDataSetChanged();
         //contactsList = new ArrayList<>();
-        contactsListViewAdapter = new CustomListViewAdapter(context, LISTVIEWADAPTER_ACTION, contactsList);
-        contactsListView.setAdapter(contactsListViewAdapter);
     }
 
     //OnActivityCreated?
@@ -115,6 +116,7 @@ public class ContactsFragment extends Fragment{
         contactsText = (TextView) view.findViewById(R.id.text_contacts);
         addContact = (Button) view.findViewById(R.id.action_add_contact);
 
+
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +127,7 @@ public class ContactsFragment extends Fragment{
                     addContact.setText(getResources().getString(R.string.action_add_contact));
                     contactsListViewAdapter.notifyDataSetChanged();
 
-                    fragmentCommunicator.finishChooseContacts(contactsToSend);
+                    fragmentCommunicator.finishChoose("contacts", contactsToSend);
 
                 } else {
 
@@ -198,7 +200,7 @@ public class ContactsFragment extends Fragment{
                     contact.add("CONTACT_CONTAINING_GROUPS", new JsonArray());*/
                     //sessionManager.createContact(contact.toString());
 
-                    contactsList.add(contact);
+                    //contactsList.add(contact);
                     //Collections.sort(contactsList);
                     contactsListViewAdapter.notifyDataSetChanged();
                 }

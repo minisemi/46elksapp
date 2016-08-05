@@ -55,6 +55,8 @@ public class SettingsFragment extends Fragment{
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        setRetainInstance(true);
+
 
         view.findViewById(R.id.action_log_out).setOnClickListener(new View.OnClickListener() {
             @Override

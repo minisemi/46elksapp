@@ -54,6 +54,8 @@ public class HistoryFragment extends Fragment{
 
 
         View view = inflater.inflate(R.layout.fragment_history, container, false);
+        setRetainInstance(true);
+
         return view;
     }
 
@@ -65,6 +67,7 @@ public class HistoryFragment extends Fragment{
         historyListView = (ListView) view.findViewById(R.id.listView_history);
         historyListViewAdapter = new CustomListViewAdapter(getContext(), LISTVIEWADAPTER_ACTION, historyList);
         historyListView.setAdapter(historyListViewAdapter);
+
 
     }
 

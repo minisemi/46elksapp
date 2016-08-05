@@ -45,7 +45,7 @@ public class EditContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("POSITION", extras.getString("POSITION"));
+                intent.putExtra("POSITION", extras.getInt("POSITION"));
                 //intent.putExtra("CONTACT_OLD_INFO", jsonObject.toString());
                 setResult(RESULT_FIRST_USER, intent);
                 finish();

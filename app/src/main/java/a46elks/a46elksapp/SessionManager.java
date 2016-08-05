@@ -31,13 +31,14 @@ public class SessionManager {
     private static SharedPreferences pref;
     private static int highestContactID = 0, highestGroupID = 0;
     private static ArrayList<Contact> contactsList;
+    private static ArrayList<Group> groupsList;
 
 
     // Editor for Shared preferences
     private static SharedPreferences.Editor editor;
 
     // Context
-    Context context;
+    private static Context context;
 
     // Shared pref mode
     int PRIVATE_MODE = 0;
@@ -58,11 +59,11 @@ public class SessionManager {
 
 
     // Constructor
-    public SessionManager(Context context){
-        this.context = context;
+    public SessionManager(){
     }
 
-    public void createLoginSession ( String apiPassword, String apiUserName){
+    public void createLoginSession (Context context, String apiPassword, String apiUserName){
+        this.context = context;
         PREF_NAME = apiUserName;
         pref = context.getSharedPreferences(PREF_NAME, Context.MODE_MULTI_PROCESS | PRIVATE_MODE);
         mDbHelper = new DataBaseHelper(context, PREF_NAME+".db");
@@ -173,8 +174,8 @@ public class SessionManager {
     }
 
     // Called upon start
-    public ArrayList<Group> getGroups (){
-        ArrayList<Group> groupsList = new ArrayList<Group>();
+    public void initiateGroups(){
+        groupsList = new ArrayList<Group>();
 
         //hp = new HashMap();
         Cursor cursor =  readableDatabase.rawQuery( "select * from " + DataBaseContract.GroupsEntry.TABLE_NAME, null );
@@ -205,7 +206,7 @@ public class SessionManager {
 
             Cursor containingCursor =  readableDatabase.rawQuery( "select " + DataBaseContract.ContainingEntry.COLUMN_NAME_CONTACT_ID +
                     " from " + DataBaseContract.ContainingEntry.TABLE_NAME +
-                    "where " + DataBaseContract.ContainingEntry.COLUMN_NAME_GROUP_ID + " = " + groupID, null );
+                    " where " + DataBaseContract.ContainingEntry.COLUMN_NAME_GROUP_ID + " = " + groupID, null );
 
             containingCursor.moveToFirst();
             ArrayList<Contact> containingContacts = new ArrayList<>();
@@ -223,6 +224,9 @@ public class SessionManager {
             highestGroupID++;
         }
 
+    }
+
+    public ArrayList<Group> getGroups (){
         return groupsList;
     }
 
@@ -267,6 +271,8 @@ public class SessionManager {
                 DataBaseContract.ContactsEntry.COLUMN_NAME_NULLABLE,
                 values);
 
+        contactsList.add(contact);
+
     }
 
     public void deleteContact (String contactID){
@@ -282,6 +288,8 @@ public class SessionManager {
                 DataBaseContract.ContainingEntry.TABLE_NAME,
                 selection,
                 selectionArgs);
+
+        contactsList.remove(contactID);
     }
 
     public void updateContact (Contact contact){
@@ -304,10 +312,15 @@ public class SessionManager {
                 selection,
                 selectionArgs);
 
+        int contactID = Integer.parseInt(contact.getContactID());
+        /*contactsList.get(contactID).setFirstName(contact.getFirstName());
+        contactsList.get(contactID).setLastName(contact.getLastName());
+        contactsList.get(contactID).setMobileNumber(contact.getMobileNumber());*/
+
     }
 
     // Called upon start
-    public ArrayList<Contact> getContacts (){
+    public void initiateContacts(){
 
         //hp = new HashMap();
         Cursor cursor =  readableDatabase.rawQuery( "select * from " + DataBaseContract.ContactsEntry.TABLE_NAME, null );
@@ -345,8 +358,11 @@ public class SessionManager {
             highestContactID++;
         }
 
-        return contactsList;
 
+    }
+
+    public ArrayList<Contact> getContacts (){
+        return contactsList;
     }
 
     public int getHighestContactID (){ return highestContactID;}

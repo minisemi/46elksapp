@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import a46elks.a46elksapp.R;
 import a46elks.a46elksapp.SessionManager;
@@ -39,13 +38,13 @@ public class CreateGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_group);
         groupName = (EditText) findViewById(R.id.editText_group_name);
         contactsListView = (ListView) findViewById(R.id.listView_add_contacts);
-        sessionManager = new SessionManager(getApplicationContext());
+        sessionManager = new SessionManager();
         contactsList = sessionManager.getContacts();
         chosenContactsList = new ArrayList<>();
         contactsListViewAdapter = new CustomListViewAdapter(this, LISTVIEWADAPTER_ACTION, contactsList);
         contactsListView.setAdapter(contactsListViewAdapter);
 
-        findViewById(R.id.action_create_contact).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.action_create_group).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -54,7 +53,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_create_contact_go_back).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.action_add_group_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -68,18 +67,21 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TextView groupName = (TextView) view.findViewById(R.id.text_group_name);
-                TextView groupSize = (TextView) view.findViewById(R.id.text_group_size);
+                TextView firstName = (TextView) view.findViewById(R.id.text_contact_first_name);
+                TextView lastName = (TextView) view.findViewById(R.id.text_contact_last_name);
+                TextView mobileNumber = (TextView) view.findViewById(R.id.text_contact_mobile_number);
 
                 if (!chosenContactsList.contains(contactsList.get(position))){
 
                     view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    groupName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
-                    groupSize.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                    firstName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                    lastName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                    mobileNumber.setTextColor(getResources().getColor(R.color.colorTextPrimary));
                     chosenContactsList.add(contactsList.get(position));
                 } else {
-                    groupName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
-                    groupSize.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    firstName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    lastName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    mobileNumber.setTextColor(getResources().getColor(R.color.colorTextSecondary));
                     view.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
                     chosenContactsList.remove(contactsList.get(position));
                 }

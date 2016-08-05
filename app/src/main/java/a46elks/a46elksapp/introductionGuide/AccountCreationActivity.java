@@ -514,8 +514,8 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
             showProgress(false);
 
             if (success) {
-                sessionManager = new SessionManager(getApplicationContext());
-                sessionManager.createLoginSession(serverResponse.get("secret").getAsString(), serverResponse.get("id").getAsString());
+                sessionManager = new SessionManager();
+                sessionManager.createLoginSession(getApplicationContext(), serverResponse.get("secret").getAsString(), serverResponse.get("id").getAsString());
                 Intent intent = new Intent(context, IntroTabLayoutActivity.class);
                 startActivity(intent);
                 //finish();

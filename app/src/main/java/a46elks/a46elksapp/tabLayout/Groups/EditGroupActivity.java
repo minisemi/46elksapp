@@ -23,31 +23,32 @@ public class EditGroupActivity extends AppCompatActivity {
 
     private CustomListViewAdapter contactsListViewAdapter;
     private ListView contactsListView;
-    private ArrayList<Contact> contactsList;
-    private ArrayList<Contact> chosenContactsList;
+    private ArrayList<Contact> contactsList, addedContacts, removedContacts, chosenContactsList;
     private SessionManager sessionManager;
     private EditText groupName;
     private static final String LISTVIEWADAPTER_ACTION = "CONTACTS";
     private FragmentCommunicator fragmentCommunicator;
-
+    private Bundle extras;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_group);
-        Bundle extras = getIntent().getExtras();
+        extras = getIntent().getExtras();
         groupName = (EditText) findViewById(R.id.editText_edit_group_name);
         groupName.setText(extras.getString("GROUP_NAME"));
         contactsListView = (ListView) findViewById(R.id.listView_edit_group);
-        sessionManager = new SessionManager(getApplicationContext());
+        sessionManager = new SessionManager();
+        addedContacts = new ArrayList<>();
+        removedContacts = new ArrayList<>();
         contactsList = sessionManager.getContacts();
         chosenContactsList = extras.getParcelableArrayList("CONTAINING_CONTACTS");
         contactsListViewAdapter = new CustomListViewAdapter(this, LISTVIEWADAPTER_ACTION, contactsList);
         contactsListView.setAdapter(contactsListViewAdapter);
 
         for (Contact contact : this.chosenContactsList){
-            View child = getViewByPosition(contactsList.indexOf(contact), contactsListView);
+            View child = getViewByPosition(contactsList.indexOf(contact)+1, contactsListView);
             child.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             TextView firstName = (TextView) child.findViewById(R.id.text_contact_first_name);
             TextView lastName = (TextView) child.findViewById(R.id.text_contact_last_name);
@@ -58,7 +59,7 @@ public class EditGroupActivity extends AppCompatActivity {
             child.refreshDrawableState();
         }
 
-        findViewById(R.id.action_edit_contact).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.action_edit_group).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -67,7 +68,18 @@ public class EditGroupActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_edit_contact_go_back).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.action_delete_group).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("POSITION", extras.getInt("POSITION"));
+                //intent.putExtra("CONTACT_OLD_INFO", jsonObject.toString());
+                setResult(RESULT_FIRST_USER, intent);
+                finish();
+            }
+        });
+
+        findViewById(R.id.action_edit_group_go_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -81,20 +93,36 @@ public class EditGroupActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TextView groupName = (TextView) view.findViewById(R.id.text_group_name);
-                TextView groupSize = (TextView) view.findViewById(R.id.text_group_size);
+                TextView firstName = (TextView) view.findViewById(R.id.text_contact_first_name);
+                TextView lastName = (TextView) view.findViewById(R.id.text_contact_last_name);
+                TextView mobileNumber = (TextView) view.findViewById(R.id.text_contact_mobile_number);
+                Contact contact = contactsList.get(position);
 
-                if (!chosenContactsList.contains(contactsList.get(position))){
+                if (!chosenContactsList.contains(contact)){
+
+                    if (!removedContacts.contains(contact)){
+                        addedContacts.add(contact);
+                    } else {
+                        removedContacts.remove(contact);
+                    }
 
                     view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    groupName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
-                    groupSize.setTextColor(getResources().getColor(R.color.colorTextPrimary));
-                    chosenContactsList.add(contactsList.get(position));
+                    firstName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                    lastName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                    mobileNumber.setTextColor(getResources().getColor(R.color.colorTextPrimary));
+                    chosenContactsList.add(contact);
                 } else {
-                    groupName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
-                    groupSize.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+
+                    if (!addedContacts.contains(contact)){
+                        removedContacts.add(contact);
+                    }else {
+                        addedContacts.remove(contact);
+                    }
+                    firstName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    lastName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    mobileNumber.setTextColor(getResources().getColor(R.color.colorTextSecondary));
                     view.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-                    chosenContactsList.remove(contactsList.get(position));
+                    chosenContactsList.remove(contact);
                 }
             }
         });
@@ -131,8 +159,9 @@ public class EditGroupActivity extends AppCompatActivity {
             // perform the user login attempt.
             Intent intent = new Intent();
 
-            intent.putExtra("GROUP_NAME", groupName.getText().toString());
-            intent.putParcelableArrayListExtra("CONTAINING_CONTACTS", chosenContactsList);
+            intent.putExtra("GROUP_NAME", groupName.getText());
+            intent.putParcelableArrayListExtra("ADDED_CONTACTS", addedContacts);
+            intent.putParcelableArrayListExtra("REMOVED_CONTACTS", removedContacts);
 
             setResult(RESULT_OK, intent);
             finish();

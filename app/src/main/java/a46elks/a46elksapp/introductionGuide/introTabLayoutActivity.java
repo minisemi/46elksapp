@@ -30,7 +30,7 @@ public class IntroTabLayoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_tab_layout);
         // TODO: IMPLEMENT INTERFACE TO PASS ON PREF_NAME
-        sessionManager = new SessionManager(getApplicationContext());
+        sessionManager = new SessionManager();
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         viewPager = (ViewPager) findViewById(R.id.viewpager_intro);

@@ -17,11 +17,9 @@ public interface FragmentCommunicator {
 
     public void chooseContacts(ArrayList<Contact> contactList);
 
-    public void finishChooseContacts(ArrayList<Contact> contactList);
-
     public void chooseGroups(ArrayList<Group> groupList);
 
-    public void finishChooseGroups(ArrayList<Group> groupList);
+    public void finishChoose(String content, ArrayList receiverList);
 
     public SessionManager getSessionManager ();
 }

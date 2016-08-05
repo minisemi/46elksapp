@@ -36,6 +36,7 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
     private FragmentCommunicator fragmentCommunicator;
     private SessionManager sessionManager;
     private ArrayList<Contact> contactList;
+    private ArrayList<Group> groupList;
     private CustomExpandableListAdapter adapter;
     private ExpandableListView expandableListView;
 
@@ -78,6 +79,7 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         contactList = new ArrayList<>();
+        groupList = new ArrayList<>();
        // mPage = getArguments().getInt(ARG_PAGE);
 
 
@@ -94,7 +96,9 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_send_message, container, false);
-     //   setRetainInstance(true);
+        setRetainInstance(true);
+
+        //   setRetainInstance(true);
         return view;
     }
 
@@ -141,6 +145,15 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
             }
         });
 
+        view.findViewById(R.id.action_add_receiver_group).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                fragmentCommunicator.chooseGroups(groupList);
+
+            }
+        });
+
         editTextMessage = (EditText) view.findViewById(R.id.editText_send_message);
 
         view.findViewById(R.id.action_send_message).setOnClickListener(new View.OnClickListener() {
@@ -181,65 +194,57 @@ public class SendMessageFragment extends android.support.v4.app.Fragment{
         expandableListView.setAdapter(adapter);
     }
 
-    public void populateContacts (ArrayList<Contact> contactList){
+    public void populateReceivers (String content, ArrayList receiverList){
 
-        this.contactList = contactList;
+        List<String> headers = new ArrayList<>();
+        HashMap<String, ArrayList<Contact>> receiverContacts = new HashMap<>();
+        switch (content){
+            case "contacts":
+                ArrayList<Contact> contactList = receiverList;
+                headers.add("Contacts");
+                receiverContacts.put(headers.get(0), contactList);
+                this.contactList = contactList;
+                break;
 
-        if (listDataHeader.contains("Contacts") && contactList.size()==0){
+            case "groups":
+                ArrayList<Group> groupList = receiverList;
+                this.groupList = groupList;
+                for (Group group : groupList){
+                    headers.add(group.getName());
+                    receiverContacts.put(group.getName(), group.getContainingContacts());
+                }
+
+                break;
+        }
+
+
+        for (String header : headers){
+
+
+        if (listDataHeader.contains(header) && receiverContacts.get(header).size()==0){
             listDataHeader.remove("Contacts");
             adapter.notifyDataSetChanged();
             return;
         }
 
-        if (listDataHeader.contains("Contacts") && contactList.size()>0){
-            listDataChild.put(listDataHeader.get(listDataHeader.indexOf("Contacts")), this.contactList);
+        if (listDataHeader.contains(header) && receiverContacts.get(header).size()>0){
+            listDataChild.put(header, receiverContacts.get(header));
             adapter.notifyDataSetChanged();
-            expandableListView.expandGroup(listDataHeader.indexOf("Contacts"));
+            expandableListView.expandGroup(listDataHeader.indexOf(header));
             return;
         }
 
-        if (!listDataHeader.contains("Contacts") && contactList.size()>0){
+        if (!listDataHeader.contains(header) && receiverContacts.get(header).size()>0){
 
-            listDataHeader.add("Contacts");
-            listDataChild.put(listDataHeader.get(listDataHeader.indexOf("Contacts")), this.contactList);
-            expandableListView.expandGroup(listDataHeader.indexOf("Contacts"));
+            listDataHeader.add(header);
+            listDataChild.put(header, receiverContacts.get(header));
+            expandableListView.expandGroup(listDataHeader.indexOf(header));
             adapter.notifyDataSetChanged();
-
+        }
         }
 
 
     }
-
-    public void populateGroups (ArrayList<Group> groupList){
-
-        this.contactList = contactList;
-
-        if (listDataHeader.contains("Contacts") && contactList.size()==0){
-            listDataHeader.remove("Contacts");
-            adapter.notifyDataSetChanged();
-            return;
-        }
-
-        if (listDataHeader.contains("Contacts") && contactList.size()>0){
-            listDataChild.put(listDataHeader.get(listDataHeader.indexOf("Contacts")), this.contactList);
-            adapter.notifyDataSetChanged();
-            expandableListView.expandGroup(listDataHeader.indexOf("Contacts"));
-            return;
-        }
-
-        if (!listDataHeader.contains("Contacts") && contactList.size()>0){
-
-            listDataHeader.add("Contacts");
-            listDataChild.put(listDataHeader.get(listDataHeader.indexOf("Contacts")), this.contactList);
-            expandableListView.expandGroup(listDataHeader.indexOf("Contacts"));
-            adapter.notifyDataSetChanged();
-
-        }
-
-
-    }
-
-
 
 
 }

@@ -23,6 +23,7 @@ import a46elks.a46elksapp.tabLayout.Adapters.SampleFragmentPagerAdapter;
 import a46elks.a46elksapp.tabLayout.Contacts.Contact;
 import a46elks.a46elksapp.tabLayout.Contacts.ContactsFragment;
 import a46elks.a46elksapp.tabLayout.Groups.Group;
+import a46elks.a46elksapp.tabLayout.Groups.GroupsFragment;
 import a46elks.a46elksapp.tabLayout.History.HistoryFragment;
 import a46elks.a46elksapp.tabLayout.Messages.SendMessageFragment;
 
@@ -60,13 +61,14 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
     private int eventID = 0;
     private SessionManager sessionManager;
     private SendMessageFragment sendMessageFragment;
+    private GroupsFragment groupsFragment;
     private Boolean scrollable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_layout);
-        sessionManager = new SessionManager(getApplicationContext());
+        sessionManager = new SessionManager();
         scrollable = true;
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
@@ -106,9 +108,13 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
             public void onTabReselected(TabLayout.Tab tab) {            }
         });
 
-        historyFragment = (HistoryFragment) sampleFragmentPagerAdapter.getItem(HISTORY_POSITION);
         contactsFragment = (ContactsFragment) sampleFragmentPagerAdapter.getItem(CONTACTS_POSITION);
+        groupsFragment = (GroupsFragment) sampleFragmentPagerAdapter.getItem(GROUPS_POSITION);
         sendMessageFragment = (SendMessageFragment) sampleFragmentPagerAdapter.getItem(SEND_MESSAGE_POSITION);
+        historyFragment = (HistoryFragment) sampleFragmentPagerAdapter.getItem(HISTORY_POSITION);
+
+        sessionManager.initiateContacts();
+        sessionManager.initiateGroups();
 
     }
 
@@ -188,7 +194,7 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
     }
 
     public void chooseContacts (ArrayList<Contact> contactList) {
-        viewPager.setCurrentItem(0, true);
+        viewPager.setCurrentItem(CONTACTS_POSITION, true);
         viewPager.setScrollable(false);
         LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
         tabStrip.setEnabled(false);
@@ -199,41 +205,51 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
         //contactsFragment
     }
 
-    public void finishChooseContacts (ArrayList<Contact> contactList) {
-        viewPager.setCurrentItem(2, true);
+    public void finishChoose (String content, ArrayList receiverList) {
+        viewPager.setCurrentItem(SEND_MESSAGE_POSITION, true);
         viewPager.setScrollable(true);
         LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
         tabStrip.setEnabled(true);
         for(int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(true);
         }
-        sendMessageFragment.populateContacts(contactList);
+        switch (content){
+            case "contacts":
+                ArrayList<Contact> contactList = receiverList;
+                sendMessageFragment.populateReceivers(content, contactList);
+                break;
+
+            case "groups":
+                ArrayList<Group> groupList = receiverList;
+                sendMessageFragment.populateReceivers(content, groupList);
+                break;
+        }
 
     }
 
     public void chooseGroups (ArrayList<Group> groupList) {
-        viewPager.setCurrentItem(1, true);
+        viewPager.setCurrentItem(GROUPS_POSITION, true);
         viewPager.setScrollable(false);
         LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
         tabStrip.setEnabled(false);
         for(int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(false);
         }
-        contactsFragment.chooseContacts(groupList);
+        groupsFragment.chooseContacts(groupList);
         //contactsFragment
     }
 
-    public void finishChooseGroups (ArrayList<Group> groupList) {
-        viewPager.setCurrentItem(2, true);
+    /*public void finishChooseGroups (String content, ArrayList<Group> groupList) {
+        viewPager.setCurrentItem(SEND_MESSAGE_POSITION, true);
         viewPager.setScrollable(true);
         LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
         tabStrip.setEnabled(true);
         for(int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(true);
         }
-        sendMessageFragment.populateContacts(groupList);
+        sendMessageFragment.populateGroups(groupList);
 
-    }
+    }*/
 
     public SessionManager getSessionManager (){
         return sessionManager;

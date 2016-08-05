@@ -60,6 +60,38 @@
         android:layout_marginBottom="5dp"
         android:gravity="center_horizontal" />
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView_edit_group"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_edit_contact"
+            android:id="@+id/action_edit_group"
+            android:layout_weight="0"
+            style="@style/ButtonTheme"
+            android:layout_gravity="center" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_delete_contact"
+            android:id="@+id/action_delete_group"
+            android:layout_weight="0"
+            style="@style/ButtonTheme"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
     <TabHost
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -68,7 +100,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentEnd="false"
         android:layout_alignParentRight="false"
-        android:layout_weight="4" >
+        android:layout_weight="4"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,11 +124,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/listView_edit_group"
-                        android:layout_gravity="center_horizontal" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -151,30 +179,5 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_edit_contact"
-            android:id="@+id/action_edit_group"
-            android:layout_weight="0"
-            style="@style/ButtonTheme"
-            android:layout_gravity="center" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_delete_contact"
-            android:id="@+id/action_delete_group"
-            android:layout_weight="0"
-            style="@style/ButtonTheme"
-            android:layout_gravity="center" />
-    </LinearLayout>
 
 </LinearLayout>
