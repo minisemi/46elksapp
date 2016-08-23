@@ -29,7 +29,7 @@ import a46elks.a46elksapp.tabLayout.FragmentCommunicator;
 public class ContactsFragment extends Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
-    private static final String LISTVIEWADAPTER_ACTION = "CONTACTS";
+    private static final String LISTVIEWADAPTER_ACTION = "CONTACTS_CONTACTS";
     private final int REQUEST_CODE_ADD_CONTACT = 0, REQUEST_CODE_EDIT_CONTACT = 1;
     private ArrayList<Contact> contactsList, contactsToSend;
     private SessionManager sessionManager;
@@ -125,6 +125,9 @@ public class ContactsFragment extends Fragment{
                     chooseMode = false;
                     contactsText.setText(getResources().getString(R.string.text_contacts));
                     addContact.setText(getResources().getString(R.string.action_add_contact));
+                    for(Contact contact: contactsToSend){
+                        contactsList.get(contactsList.indexOf(contact)).setContactsSelected(false);
+                    }
                     contactsListViewAdapter.notifyDataSetChanged();
 
                     fragmentCommunicator.finishChoose("contacts", contactsToSend);
@@ -145,23 +148,28 @@ public class ContactsFragment extends Fragment{
                  TextView firstName = (TextView) view.findViewById(R.id.text_contact_first_name);
                  TextView lastName = (TextView) view.findViewById(R.id.text_contact_last_name);
                  TextView mobileNumber = (TextView) view.findViewById(R.id.text_contact_mobile_number);
+                 Contact contact = contactsList.get(position);
 
                  if (chooseMode){
 
                      if (!contactsToSend.contains(contactsList.get(position))){
 
-                     view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        /*view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
                          firstName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
                          lastName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
-                         mobileNumber.setTextColor(getResources().getColor(R.color.colorTextPrimary));
-                     contactsToSend.add(contactsList.get(position));
+                         mobileNumber.setTextColor(getResources().getColor(R.color.colorTextPrimary));*/
+                         contact.setContactsSelected(true);
+                     contactsToSend.add(contact);
                      } else {
-                         firstName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                         /*firstName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
                          lastName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
                          mobileNumber.setTextColor(getResources().getColor(R.color.colorTextSecondary));
-                         view.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-                         contactsToSend.remove(contactsList.get(position));
+                        // view.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));*/
+                         contact.setContactsSelected(false);
+                         contactsToSend.remove(contact);
                      }
+                     contactsListViewAdapter.notifyDataSetChanged();
 
                  } else {
 
@@ -271,7 +279,8 @@ public class ContactsFragment extends Fragment{
         addContact.setText(getResources().getString(R.string.action_choose_contacts));
         chooseMode = true;
         for (Contact contact : this.contactsToSend){
-            View child = getViewByPosition(contactsList.indexOf(contact), contactsListView);
+            contactsList.get(contactsList.indexOf(contact)).setContactsSelected(true);
+            /*View child = getViewByPosition(contactsList.indexOf(contact), contactsListView);
             child.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             TextView firstName = (TextView) child.findViewById(R.id.text_contact_first_name);
             TextView lastName = (TextView) child.findViewById(R.id.text_contact_last_name);
@@ -279,8 +288,9 @@ public class ContactsFragment extends Fragment{
             firstName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
             lastName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
             mobileNumber.setTextColor(getResources().getColor(R.color.colorTextPrimary));
-            child.refreshDrawableState();
+            child.refreshDrawableState();*/
         }
+            contactsListViewAdapter.notifyDataSetChanged();
 
         //contactsListView.performItemClick(contactsListView, 0, 1);
 

@@ -18,6 +18,7 @@ public class Contact implements Parcelable {
     private String mobileNumber, firstName, lastName;
     private int contactID;
     private HashSet<String> containingGroups;
+    private Boolean contactSelected = false, groupSelected = false;
 
     public Contact (String firstName, String lastName, String mobileNumber){
         containingGroups = new HashSet<>();
@@ -44,6 +45,10 @@ public class Contact implements Parcelable {
     public void removeContainingGroup (String group){ containingGroups.remove(group);}
     public void setContactID (Integer contactID){this.contactID = contactID;}
     public void setAtomicInteger (Integer sequenceNumber){this.sequenceNumber.set(sequenceNumber);}
+    public void setContactsSelected (Boolean contactSelected){this.contactSelected = contactSelected;}
+    public void setGroupsSelected (Boolean groupSelected){this.groupSelected = groupSelected;}
+    public Boolean getContactsSelected (){return contactSelected;}
+    public Boolean getGroupsSelected (){return groupSelected;}
 
     @Override
     public void writeToParcel(Parcel pc, int flags) {

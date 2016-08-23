@@ -26,7 +26,7 @@ public class EditGroupActivity extends AppCompatActivity {
     private ArrayList<Contact> contactsList, addedContacts, removedContacts, chosenContactsList;
     private SessionManager sessionManager;
     private EditText groupName;
-    private static final String LISTVIEWADAPTER_ACTION = "CONTACTS";
+    private static final String LISTVIEWADAPTER_ACTION = "GROUPS_CONTACTS";
     private FragmentCommunicator fragmentCommunicator;
     private Bundle extras;
 

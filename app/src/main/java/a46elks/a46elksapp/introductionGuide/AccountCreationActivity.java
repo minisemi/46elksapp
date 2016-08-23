@@ -69,13 +69,13 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_creation);
         editName = (EditText) findViewById(R.id.editText_name_or_company);
-        editName.setText("Alexander");
+        //editName.setText("Alexander");
         editMobilenumber = (EditText) findViewById(R.id.editText_mobile_number);
-        editMobilenumber.setText("+46707142760");
+       // editMobilenumber.setText("+46707142760");
         editEmail = (AutoCompleteTextView) findViewById(R.id.editText_email);
-        editEmail.setText("alexander+0002@46elks.com");
+       // editEmail.setText("alexander+0002@46elks.com");
         editPassword = (EditText) findViewById(R.id.editText_password);
-        editPassword.setText("admin");
+       // editPassword.setText("admin");
         errorMessage = (TextView) findViewById(R.id.text_error_message);
         errorFailed = getResources().getString(R.string.error_connection_failed);
         accountCreationForm = findViewById(R.id.account_creation_form);
@@ -162,6 +162,10 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
             editMobilenumber.setError(getString(R.string.error_field_required));
             focusView = editMobilenumber;
             cancel = true;
+        } else if (!isMobileNumberValid(mobileNumber)) {
+            editMobilenumber.setError(getString(R.string.error_invalid_account_number));
+            focusView = editMobilenumber;
+            cancel = true;
         }
 
         if (TextUtils.isEmpty(name)){
@@ -186,6 +190,11 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
+    }
+
+    private boolean isMobileNumberValid(String number) {
+        //TODO: Replace this with your own logic
+        return number.contains("+");
     }
 
     private boolean mayRequestContacts() {
@@ -347,7 +356,11 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
             this.email = email;
             this.password = password;
             this.mobileNumber = mobileNumber;
-            currency = "SEK";
+            if (mobileNumber.startsWith("+46")){
+                currency = "SEK";
+            } else {
+                currency = "EUR";
+            }
             jsonParser = new JsonParser();
         }
 
@@ -516,7 +529,7 @@ public class AccountCreationActivity extends AppCompatActivity implements Loader
             if (success) {
                 sessionManager = new SessionManager();
                 sessionManager.createLoginSession(getApplicationContext(), serverResponse.get("secret").getAsString(), serverResponse.get("id").getAsString());
-                Intent intent = new Intent(context, IntroTabLayoutActivity.class);
+                Intent intent = new Intent(context, TabLayoutActivity.class);
                 startActivity(intent);
                 //finish();
             } else {

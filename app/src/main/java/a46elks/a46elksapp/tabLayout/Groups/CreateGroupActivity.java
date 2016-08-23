@@ -27,7 +27,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private ArrayList<Contact> chosenContactsList;
     private SessionManager sessionManager;
     private EditText groupName;
-    private static final String LISTVIEWADAPTER_ACTION = "CONTACTS";
+    private static final String LISTVIEWADAPTER_ACTION = "GROUPS_CONTACTS";
     private FragmentCommunicator fragmentCommunicator;
 
 
@@ -70,21 +70,26 @@ public class CreateGroupActivity extends AppCompatActivity {
                 TextView firstName = (TextView) view.findViewById(R.id.text_contact_first_name);
                 TextView lastName = (TextView) view.findViewById(R.id.text_contact_last_name);
                 TextView mobileNumber = (TextView) view.findViewById(R.id.text_contact_mobile_number);
+                Contact contact = contactsList.get(position);
 
-                if (!chosenContactsList.contains(contactsList.get(position))){
 
-                    view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                if (!chosenContactsList.contains(contact)){
+
+                    /*view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     firstName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
                     lastName.setTextColor(getResources().getColor(R.color.colorTextPrimary));
-                    mobileNumber.setTextColor(getResources().getColor(R.color.colorTextPrimary));
-                    chosenContactsList.add(contactsList.get(position));
+                    mobileNumber.setTextColor(getResources().getColor(R.color.colorTextPrimary));*/
+                    contact.setGroupsSelected(true);
+                    chosenContactsList.add(contact);
                 } else {
-                    firstName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
+                    /*firstName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
                     lastName.setTextColor(getResources().getColor(R.color.colorTextSecondary));
                     mobileNumber.setTextColor(getResources().getColor(R.color.colorTextSecondary));
-                    view.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));
-                    chosenContactsList.remove(contactsList.get(position));
+                    view.setBackgroundColor(getResources().getColor(R.color.colorTextPrimary));*/
+                    contact.setGroupsSelected(false);
+                    chosenContactsList.remove(contact);
                 }
+                contactsListViewAdapter.notifyDataSetChanged();
             }
         });
 

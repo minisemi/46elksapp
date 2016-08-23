@@ -11,6 +11,9 @@
     tools:context=".tabLayout.Messages.SendMessageFragment"
     android:background="@android:color/background_light">
 
+
+
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -49,7 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -85,7 +89,17 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1.8" >
+        android:layout_weight="1.8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/text_receivers"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0"
+            android:layout_marginBottom="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,20 +123,22 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/action_add_receiver_group"
-                    android:src="@drawable/ic_add_group"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent" />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/action_add_receiver_contact"
                     android:layout_weight="1"
                     android:src="@drawable/ic_add_contact"
                     android:background="@android:color/transparent" />
 
                 <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/action_add_receiver_group"
+                    android:src="@drawable/ic_add_group"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent" />
+
+
+                <ImageButton
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/action_dial_pad"
@@ -134,6 +150,8 @@
 
     </LinearLayout>
 
+
+
     <Button
         style="@style/ButtonTheme"
         android:layout_width="wrap_content"
@@ -141,7 +159,10 @@
         android:text="@string/action_send_message"
         android:id="@+id/action_send_message"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0"/>
+        android:layout_weight="0">
+
+    </Button>
+
 
 </LinearLayout>
 

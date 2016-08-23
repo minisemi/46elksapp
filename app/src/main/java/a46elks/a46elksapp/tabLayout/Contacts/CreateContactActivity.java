@@ -64,7 +64,7 @@ public class CreateContactActivity extends AppCompatActivity {
             focusView = mobileNumber;
             cancel = true;
         } else if (!isNumberValid(number)) {
-            mobileNumber.setError(getString(R.string.error_invalid_number));
+
             focusView = mobileNumber;
             cancel = true;
         }
@@ -94,7 +94,21 @@ public class CreateContactActivity extends AppCompatActivity {
     }
 
     public Boolean isNumberValid (String number){
-        return (number.length()==10);
+        if (!number.contains("+")){
+            if (number.length()==10) {
+                return true;
+            }
+                mobileNumber.setError(getString(R.string.error_invalid_number));
+            return false;
+        } else {
+            if (number.length()==12) {
+                return true;
+            }
+            mobileNumber.setError(getString(R.string.error_invalid_number_plus));
+            return false;
+
+        }
+
     }
 
     @Override

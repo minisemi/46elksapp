@@ -172,8 +172,8 @@ public class TabLayoutActivity extends AppCompatActivity implements FragmentComm
         }
 
             viewPager.setCurrentItem(3, true);
-            String apiUsername = sessionManager.getUserDetails().get("KEY_API_USERNAME");
-            String apiPassword = sessionManager.getUserDetails().get("KEY_API_PASSWORD");
+            String apiUsername = sessionManager.getUserDetails().get("id");
+            String apiPassword = sessionManager.getUserDetails().get("secret");
             //int connectionID = 0;
             //historyFragment.setProgressMax(eventID, listDataChild.size());
 

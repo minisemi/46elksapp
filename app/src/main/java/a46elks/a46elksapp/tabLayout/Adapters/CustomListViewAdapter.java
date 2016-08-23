@@ -4,6 +4,8 @@ package a46elks.a46elksapp.tabLayout.Adapters;
  * Created by Alexander on 2016-07-05.
  */
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,11 @@ public class CustomListViewAdapter extends ArrayAdapter {
         super(context, -1, values);
         this.context = context;
         switch (LISTVIEWADAPTER_ACTION) {
-            case "CONTACTS":
+            case "CONTACTS_CONTACTS":
+                this.valuesContacts = values;
+                break;
+
+            case "GROUPS_CONTACTS":
                 this.valuesContacts = values;
                 break;
 
@@ -56,18 +62,69 @@ public class CustomListViewAdapter extends ArrayAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = null;
         TextView textView;
+        TextView firstName;
+        TextView lastName;
+        TextView mobileNumber;
 
         switch (LISTVIEWADAPTER_ACTION){
 
-            case "CONTACTS": //populateAddressBook();
+            case "CONTACTS_CONTACTS": //populateAddressBook();
                 //flytta till metoden
                 rowView = inflater.inflate(R.layout.list_item_contacts, parent, false);
-                TextView firstName = (TextView) rowView.findViewById(R.id.text_contact_first_name);
-                TextView lastName = (TextView) rowView.findViewById(R.id.text_contact_last_name);
-                TextView mobileNumber = (TextView) rowView.findViewById(R.id.text_contact_mobile_number);
-                firstName.setText(valuesContacts.get(position).getFirstName());
-                lastName.setText(valuesContacts.get(position).getLastName());
-                mobileNumber.setText(valuesContacts.get(position).getMobileNumber());
+                Contact contact = valuesContacts.get(position);
+                 firstName = (TextView) rowView.findViewById(R.id.text_contact_first_name);
+                 lastName = (TextView) rowView.findViewById(R.id.text_contact_last_name);
+                 mobileNumber = (TextView) rowView.findViewById(R.id.text_contact_mobile_number);
+                firstName.setText(contact.getFirstName());
+                lastName.setText(contact.getLastName());
+                mobileNumber.setText(contact.getMobileNumber());
+
+                if (contact.getContactsSelected()){
+                    rowView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                    firstName.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextPrimary));
+                    lastName.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextPrimary));
+                    mobileNumber.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextPrimary));
+
+                } else {
+                    firstName.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextSecondary));
+                    lastName.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextSecondary));
+                    mobileNumber.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextSecondary));
+                    rowView.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorTextPrimary));
+                }
+                //contactID.setText(Integer.toString(valuesContacts.get(position).getContactID()));
+                //containingGroups.setText(valuesContacts.get(position).getContainingGroups());
+                /*JsonObject contact = (JsonObject) jsonParser.parse(valuesContacts.get(position));
+                firstName.setText(contact.get("CONTACT_FIRST_NAME").toString());
+                lastName.setText(contact.get("CONTACT_LAST_NAME").toString());
+                mobileNumber.setText(contact.get("CONTACT_MOBILE_NUMBER").toString());
+                containingGroups.setText(contact.get("CONTACT_CONTAINING_GROUPS").toString());*/
+
+                //textView.setText(valuesHistory.get(position));
+                return rowView;
+
+            case "GROUPS_CONTACTS": //populateAddressBook();
+                //flytta till metoden
+                Contact groupContact = valuesContacts.get(position);
+                rowView = inflater.inflate(R.layout.list_item_contacts, parent, false);
+                 firstName = (TextView) rowView.findViewById(R.id.text_contact_first_name);
+                 lastName = (TextView) rowView.findViewById(R.id.text_contact_last_name);
+                 mobileNumber = (TextView) rowView.findViewById(R.id.text_contact_mobile_number);
+                firstName.setText(groupContact.getFirstName());
+                lastName.setText(groupContact.getLastName());
+                mobileNumber.setText(groupContact.getMobileNumber());
+
+                if (groupContact.getGroupsSelected()){
+                    rowView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                    firstName.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextPrimary));
+                    lastName.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextPrimary));
+                    mobileNumber.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextPrimary));
+
+                } else {
+                    firstName.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextSecondary));
+                    lastName.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextSecondary));
+                    mobileNumber.setTextColor(ContextCompat.getColor(getContext(),R.color.colorTextSecondary));
+                    rowView.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorTextPrimary));
+                }
                 //contactID.setText(Integer.toString(valuesContacts.get(position).getContactID()));
                 //containingGroups.setText(valuesContacts.get(position).getContainingGroups());
                 /*JsonObject contact = (JsonObject) jsonParser.parse(valuesContacts.get(position));

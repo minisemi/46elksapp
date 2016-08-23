@@ -26,6 +26,7 @@
     <string name="action_create_account">Create your account</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
+    <string name="error_invalid_account_number">Please include mobile number\'s country calling code</string>
 
     <!-- Strings related to IntroGroupsFragment1  -->
     <string name="text_create_group">Create a group of people you\'d like to text.</string>
@@ -63,16 +64,15 @@
     <!-- Strings related to SendMessageFragment -->
     <string name="text_group_name">Group name</string>
     <string name="text_group_name_ftu">Visitors</string>
-    <string name="text_message_name_ftu">Send your first SMS!</string>
+    <string name="text_receivers">Receivers</string>
+    <string name="text_message_name_ftu">Send an SMS!</string>
     <string name="text_message_name">Send an SMS!</string>
     <string name="action_send_message">Send</string>
     <string name="text_message">Hi!
         \n
-        \nThis is an example of how the text message might look,
-        containing some information for the receiver.
+        \nThis is an example of how the text message might look.
     \n
     \nBest regards,
-    \n
     \nSender</string>
 
     <!-- Strings related to ContactsFragment -->
@@ -88,6 +88,7 @@
     <string name="prompt_contact_number">Mobile number</string>
     <string name="action_create_contact">Done</string>
     <string name="error_invalid_number">Number must be 10 digits long</string>
+    <string name="error_invalid_number_plus">Number with a country calling code must be 12 digits long</string>
 
 
     <!-- Strings related to EditContactActivity -->
