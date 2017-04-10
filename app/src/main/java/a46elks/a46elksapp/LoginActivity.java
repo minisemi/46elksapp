@@ -95,10 +95,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.prompt_email);
         populateAutoComplete();
-       // mEmailView.setText("alexander@46elks.com");
 
         mPasswordView = (EditText) findViewById(R.id.prompt_password);
-        //mPasswordView.setText("ufcadell9218");
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
