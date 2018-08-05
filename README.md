@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>46elks app (official name not yet decided)</title>
+<h2>46elks app</h2>
 </head>
 <body>
 
